@@ -1,0 +1,65 @@
+@startuml
+
+skinparam style strictuml
+skinparam shadowing false
+skinparam RoundCorner 10
+
+title User Aggregate (Domain Model - Unified)
+
+package "com.keskin.users.domain" #FFF9C4 {
+
+  package "model" {
+    abstract class BaseEntity {
+      - uuid : UUID
+      - createdAt : LocalDateTime
+      - createdBy : String
+      - updatedAt : LocalDateTime
+      - updatedBy : String
+      - deletedAt : LocalDateTime
+      - deletedBy : String
+      - deleted : boolean
+      --
+      # markAsDeleted(deletedBy : String)
+      # updateAudit(updatedBy : String)
+    }
+
+    class User {
+      - name : Name
+      - age : Age
+      - email : Email
+      - password : Password
+      - role : Role
+      - active : boolean
+      --
+      + activate()
+      + deactivate()
+      + changeRoleToEmployee()
+      + promoteToAdmin()
+      + updateUser(name: Name, age: Age, email: Email, updater: String)
+      + deleteUser(deletedBy : String)
+    }
+
+    enum Role {
+      USER
+      EMPLOYEE
+      ADMIN
+    }
+  }
+
+  package "valueobject" {
+    class Name <<Value Object>>
+    class Age <<Value Object>>
+    class Email <<Value Object>>
+    class Password <<Value Object>>
+  }
+
+  ' -- İlişkiler --
+  User --|> BaseEntity
+  User *-- Name
+  User *-- Age
+  User *-- Email
+  User *-- Password
+  User --> Role
+}
+
+@enduml

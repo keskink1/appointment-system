@@ -1,0 +1,69 @@
+@startuml
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam RoundCorner 10
+
+title User Service - Layered Architecture
+
+package "com.keskin.users.api" #E3F2FD {
+    class UserController <<Controller>> {
+        + getById(id: UUID)
+        + register(request: CreateUserRequestDto)
+        + updateById(id: UUID, request: UpdateUserRequestDto)
+        + promoteToAdmin(id: UUID)
+    }
+}
+
+package "com.keskin.users.application" #F3E5F5 {
+    class UserAppService <<Service>> {
+        - userRepository: UserRepository
+        - userMapper: UserMapper
+        + registerUser(request)
+        + updateUserById(id, request)
+    }
+
+    package "dto" #FFFFFF {
+        class UserDto <<Record>>
+        class CreateUserRequestDto <<Record>>
+        class UpdateUserRequestDto <<Record>>
+    }
+}
+
+package "com.keskin.users.domain" #FFF9C4 {
+    package "model" {
+        class User <<Aggregate Root>> {
+            - name: Name
+            - email: Email
+            - role: Role
+            + promoteToAdmin()
+            + activate()
+        }
+        abstract class BaseEntity
+    }
+
+    package "repository" {
+        interface UserRepository <<Interface>> {
+            + saveUser(user: User)
+            + findById(id: UUID)
+            + existsByEmail(email: String)
+        }
+    }
+}
+
+package "com.keskin.users.infrastructure" #E8F5E9 {
+    class SqlUserRepositoryImpl <<Adapter>> {
+        - jpaRepository: JpaUserRepository
+        + saveUser(user: User)
+    }
+
+    class JpaUserRepository <<Spring Data>>
+}
+
+UserController --> UserAppService : calls
+UserAppService --> UserRepository : uses
+UserAppService --> User : manages
+SqlUserRepositoryImpl ..|> UserRepository : implements
+SqlUserRepositoryImpl --> JpaUserRepository : wraps
+
+@enduml

@@ -1,0 +1,63 @@
+@startuml
+title <font color=#1A237E>User Registration Flow (Clean Architecture)</font>
+
+autonumber "<b>[00]</b>"
+skinparam style strictuml
+skinparam MaxMessageSize 200
+skinparam BackgroundColor #FFFFFF
+
+' -- Katman Renk Tanımlamaları --
+skinparam ParticipantBackgroundColor<<Web>> #E3F2FD
+skinparam ParticipantBorderColor<<Web>> #1565C0
+
+skinparam ParticipantBackgroundColor<<Application>> #F3E5F5
+skinparam ParticipantBorderColor<<Application>> #7B1FA2
+
+skinparam ParticipantBackgroundColor<<Domain>> #FFF9C4
+skinparam ParticipantBorderColor<<Domain>> #FBC02D
+
+skinparam ParticipantBackgroundColor<<Infrastructure>> #E8F5E9
+skinparam ParticipantBorderColor<<Infrastructure>> #2E7D32
+
+actor "Client (Mobile/Web)" as Client #SkyBlue
+
+participant "UserController" as Controller <<Web>>
+participant "UserAppService" as Service <<Application>>
+participant "User" as Domain <<Domain>>
+participant "UserRepository" as Repo <<Domain>>
+participant "SqlUserRepositoryAdapter" as Adapter <<Infrastructure>>
+database "<color:#FFFFFF>PostgreSQL</color>" as DB #2E7D32
+
+' -- Akış Başlıyor --
+Client -[#blue]> Controller : <font color=blue><b>POST /api/v1/users</b></font>\n(RegisterRequest)
+activate Controller #E3F2FD
+
+Controller -[#blue]> Controller : <font color=blue>Validate Request (@Valid)</font>
+
+Controller -[#purple]> Service : <font color=purple>createUser(request)</font>
+activate Service #F3E5F5
+
+Service -[#goldenrod]> Domain : <font color=darkgoldenrod>new User(name, age, email, password)</font>
+activate Domain #FFF9C4
+Domain -[#goldenrod]> Domain : <font color=darkgoldenrod>Validate Business Rules\n(Value Objects check)</font>
+Domain -[#goldenrod]> Domain : <font color=darkgoldenrod>assignDefaults()\n(active=true, role=USER)</font>
+return <font color=darkgoldenrod>userObject</font>
+
+Service -[#goldenrod]> Repo : <font color=darkgoldenrod>save(userObject)</font>
+activate Repo #FFF9C4
+Repo -[#green]> Adapter : <font color=green>save(userObject)</font>
+activate Adapter #E8F5E9
+Adapter -[#green]> Adapter : <font color=green>Map to JPA Entity</font>
+Adapter -[#green]> DB : <font color=green><b>INSERT INTO users...</b></font>
+activate DB #E8F5E9
+return <font color=green>OK</font>
+return <font color=green>userUuid</font>
+return <font color=darkgoldenrod>userUuid</font>
+
+Service -[#purple]> Controller : <font color=purple>UserResponse(id, email, ...)</font>
+deactivate Service
+
+return <font color=blue><b>201 Created (UserResponse)</b></font>
+deactivate Controller
+
+@enduml
