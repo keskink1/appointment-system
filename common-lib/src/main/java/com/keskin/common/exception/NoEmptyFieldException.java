@@ -1,4 +1,4 @@
-package com.keskin.users.common.exception;
+package com.keskin.common.exception;
 
 public class NoEmptyFieldException extends RuntimeException {
     public NoEmptyFieldException(Object fieldValue) {

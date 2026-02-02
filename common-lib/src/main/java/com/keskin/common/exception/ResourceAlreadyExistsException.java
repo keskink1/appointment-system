@@ -1,4 +1,4 @@
-package com.keskin.users.common.exception;
+package com.keskin.common.exception;
 
 /**
  * Thrown when attempting to create a resource that already exists.

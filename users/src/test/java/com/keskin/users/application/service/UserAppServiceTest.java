@@ -2,7 +2,7 @@ package com.keskin.users.application.service;
 
 import com.keskin.users.application.dto.CreateUserRequestDto;
 import com.keskin.users.application.mapper.UserMapper;
-import com.keskin.users.common.exception.ResourceAlreadyExistsException;
+import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;

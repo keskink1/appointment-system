@@ -4,8 +4,8 @@ import com.keskin.users.application.dto.CreateUserRequestDto;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.users.application.dto.UserDto;
 import com.keskin.users.application.mapper.UserMapper;
-import com.keskin.users.common.exception.ResourceAlreadyExistsException;
-import com.keskin.users.common.exception.ResourceNotFoundException;
+import com.keskin.common.exception.ResourceAlreadyExistsException;
+import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -55,12 +55,12 @@ public class UserAppService {
             throw new ResourceAlreadyExistsException("User", "Email", request.email());
         }
 
-        User user = new User(
+        User user = User.createUser(
                 request.name(),
                 request.age(),
                 request.email(),
                 request.password()
-        );
+                );
         userRepository.saveUser(user);
 
         return userMapper.toDto(user);

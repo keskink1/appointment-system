@@ -1,4 +1,4 @@
-package com.keskin.users.domain.model;
+package com.keskin.common.model;
 
 
 import lombok.Getter;

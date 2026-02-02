@@ -1,7 +1,7 @@
 package com.keskin.users.domain.valueobject;
 
-import com.keskin.users.common.exception.InvalidValidationException;
-import com.keskin.users.common.exception.NoEmptyFieldException;
+import com.keskin.common.exception.InvalidValidationException;
+import com.keskin.common.exception.NoEmptyFieldException;
 
 import java.util.regex.Pattern;
 

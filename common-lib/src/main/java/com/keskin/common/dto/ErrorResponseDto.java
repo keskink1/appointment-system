@@ -1,4 +1,4 @@
-package com.keskin.users.common.dto;
+package com.keskin.common.dto;
 
 import java.time.LocalDateTime;
 

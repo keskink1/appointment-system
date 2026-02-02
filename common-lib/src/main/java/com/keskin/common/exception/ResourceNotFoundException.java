@@ -1,4 +1,4 @@
-package com.keskin.users.common.exception;
+package com.keskin.common.exception;
 
 /**
  * Thrown when a requested resource cannot be found.

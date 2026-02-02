@@ -1,6 +1,6 @@
 package com.keskin.users.domain.valueobject;
 
-import com.keskin.users.common.exception.NoEmptyFieldException;
+import com.keskin.common.exception.NoEmptyFieldException;
 import jakarta.validation.ValidationException;
 
 public record Name(

@@ -1,6 +1,6 @@
 package com.keskin.users.domain.valueobject;
 
-import com.keskin.users.common.exception.InvalidValidationException;
+import com.keskin.common.exception.InvalidValidationException;
 
 public record Password(
         String value

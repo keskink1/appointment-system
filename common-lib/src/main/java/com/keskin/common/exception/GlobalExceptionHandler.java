@@ -1,6 +1,6 @@
-package com.keskin.users.common.exception;
+package com.keskin.common.exception;
 
-import com.keskin.users.common.dto.ErrorResponseDto;
+import com.keskin.common.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

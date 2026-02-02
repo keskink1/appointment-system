@@ -1,5 +1,6 @@
 package com.keskin.users.domain.model;
 
+import com.keskin.common.model.BaseEntity;
 import com.keskin.users.domain.valueobject.Age;
 import com.keskin.users.domain.valueobject.Email;
 import com.keskin.users.domain.valueobject.Name;
@@ -22,7 +23,7 @@ public class User extends BaseEntity {
 
     private Role role;
 
-    private boolean active = true;
+    private boolean active;
 
     public User(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, String newNameValue, Integer newAgeValue, String newEmailValue, String newPasswordValue, Role role, boolean active) {
         super(uuid, createdAt, createdBy, deleted, deletedAt, deletedBy);
@@ -34,18 +35,21 @@ public class User extends BaseEntity {
         this.active = active;
     }
 
-    public User(String newNameValue, Integer newAgeValue, String newEmailValue, String newPasswordValue) {
-        super(
+    public static User createUser(String name, Integer age, String email, String password) {
+        return new User(
                 UUID.randomUUID(),
                 LocalDateTime.now(),
-                "SYSTEM"// change after jwt
-
+                "SYSTEM", // change after jwt
+                false, // deleted
+                null,  // deletedAt
+                null,  // deletedBy
+                name,
+                age,
+                email,
+                password,
+                Role.USER,
+                true
         );
-        this.name = new Name(newNameValue);
-        this.age = new Age(newAgeValue);
-        this.email = new Email(newEmailValue);
-        this.password = new Password(newPasswordValue);
-        this.role = Role.USER;
     }
 
     public void activate() {
