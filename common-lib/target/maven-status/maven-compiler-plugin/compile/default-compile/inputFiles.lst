@@ -1,0 +1,6 @@
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/proje/common/dto/ErrorResponseDto.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/proje/common/exception/GlobalExceptionHandler.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/proje/common/exception/InvalidValidationException.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/proje/common/exception/NoEmptyFieldException.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/proje/common/exception/ResourceAlreadyExistsException.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/proje/common/exception/ResourceNotFoundException.java

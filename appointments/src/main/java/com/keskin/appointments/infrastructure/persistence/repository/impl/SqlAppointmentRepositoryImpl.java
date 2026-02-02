@@ -1,14 +1,44 @@
 package com.keskin.appointments.infrastructure.persistence.repository.impl;
 
 import com.keskin.appointments.domain.model.Appointment;
+import com.keskin.appointments.domain.model.AppointmentStatus;
 import com.keskin.appointments.domain.repository.AppointmentRepository;
+import com.keskin.appointments.infrastructure.persistence.mapper.AppointmentPersistenceMapper;
+import com.keskin.appointments.infrastructure.persistence.repository.AppointmentJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public class SqlAppointmentRepositoryImpl implements AppointmentRepository {
 
+    private final AppointmentJpaRepository appointmentRepository;
+    private final AppointmentPersistenceMapper appointmentMapper;
 
+    public SqlAppointmentRepositoryImpl(AppointmentJpaRepository appointmentRepository, AppointmentPersistenceMapper appointmentMapper) {
+        this.appointmentRepository = appointmentRepository;
+        this.appointmentMapper = appointmentMapper;
+    }
+
+    @Override
+    public Optional<Appointment> findById(UUID id) {
+        return appointmentRepository.findById(id)
+                .map(appointmentMapper::toDomain);
+    }
+
+    @Override
+    public void save(Appointment appointment) {
+        var entity = appointmentMapper.toEntity(appointment);
+        appointmentRepository.save(entity);
+    }
+
+    @Override
+    public List<Appointment> findByUserIdAndNotCanceled(UUID id) {
+        return appointmentRepository.findByUserIdAndAppointmentStatusNotCanceled(id, AppointmentStatus.CANCELED)
+                .stream()
+                .map(appointmentMapper::toDomain)
+                .toList();
+    }
 }

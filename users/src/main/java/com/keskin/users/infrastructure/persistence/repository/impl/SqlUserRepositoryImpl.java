@@ -24,13 +24,13 @@ public class SqlUserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> findById(UUID id) {
        return jpaUserRepository.findById(id)
-               .map(userEntity -> userMapper.toDomain(userEntity));
+               .map(userMapper::toDomain);
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         return jpaUserRepository.findByEmailAndDeletedFalse(email)
-                .map(user -> userMapper.toDomain(user));
+                .map(userMapper::toDomain);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.keskin.appointments.application.mapper;
 
 import com.keskin.appointments.application.dto.AppointmentDto;
+import com.keskin.appointments.application.dto.CreateAppointmentRequestDto;
 import com.keskin.appointments.domain.model.Appointment;
 import org.springframework.stereotype.Component;
 

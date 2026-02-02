@@ -38,7 +38,7 @@ public class UserEntity {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    // Audit & Soft Delete
+    // -- BASE ENTITY --
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

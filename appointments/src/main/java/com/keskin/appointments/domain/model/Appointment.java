@@ -21,27 +21,29 @@ public class Appointment extends BaseEntity {
     private AppointmentStatus appointmentStatus;
 
 
-    public Appointment(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, AppointmentTime appointmentTime, UserShadow user, AppointmentStatus appointmentStatus) {
+    public Appointment(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, LocalDateTime timeValue, UUID userId, String userName, String userEmail, AppointmentStatus appointmentStatus) {
         super(uuid, createdAt, createdBy, deleted, deletedAt, deletedBy);
-        this.appointmentTime = appointmentTime;
-        this.user = user;
+        this.appointmentTime = new AppointmentTime(timeValue);
+        this.user = new UserShadow(userId, userName, userEmail);
         this.appointmentStatus = appointmentStatus;
     }
 
-    public static Appointment createAppointment(AppointmentTime appointmentTime, UserShadow user, AppointmentStatus appointmentStatus){
+
+    public static Appointment createAppointment(LocalDateTime time, UUID userId, String userName, String userEmail) {
         return new Appointment(
                 UUID.randomUUID(),
                 LocalDateTime.now(),
-                "SYSTEM", // change after jwt
-                false, // deleted
-                null,  // deletedAt
-                null,  // deletedBy
-                appointmentTime,
-                user,
+                "SYSTEM",
+                false,
+                null,
+                null,
+                time,
+                userId,
+                userName,
+                userEmail,
                 AppointmentStatus.PENDING
         );
     }
-
     public void rescheduleAppointment(LocalDateTime time, String actor){
         if (appointmentStatus.equals(AppointmentStatus.PENDING) || appointmentStatus.equals(AppointmentStatus.APPROVED)) {
             this.appointmentTime = new AppointmentTime(time);
