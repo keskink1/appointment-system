@@ -10,26 +10,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.List;
 
 public class GatewayHeaderFilter extends OncePerRequestFilter {
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String userId = request.getHeader("X-User-Id");
-        String userRole = request.getHeader("X-User-Role");
+        String role = request.getHeader("X-User-Role");
 
-        if (userId != null && userRole != null) {
-            String grantedRole = userRole.startsWith("ROLE_") ? userRole : "ROLE_" + userRole;
-
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+        if (userId != null && !userId.equals("null")) {
+            var auth = new UsernamePasswordAuthenticationToken(
                     userId,
                     null,
-                    Collections.singletonList(new SimpleGrantedAuthority(grantedRole))
+                    List.of(new SimpleGrantedAuthority("ROLE_" + role))
             );
-
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 

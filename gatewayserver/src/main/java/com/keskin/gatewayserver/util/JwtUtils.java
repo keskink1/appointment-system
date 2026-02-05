@@ -48,6 +48,6 @@ public class JwtUtils {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .get("userId", String.class);
+                .getSubject();
     }
 }

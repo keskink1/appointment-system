@@ -4,22 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/config/JwtConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/config/RouteValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/filter/AuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/util/JwtUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/JwtConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="add role based auth, refresh token, redis for storing refresh token">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatewayserver/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/GatewayserverApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/GatewayserverApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/config/GatewayConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/config/GatewayConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatewayserver/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/UsersApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/UsersApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/GatewayHeaderFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/GatewayHeaderFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/dto/response/AuthResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/dto/response/AuthResponseDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/util/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/util/JwtUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/JwtTokenProvider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/CustomUserDetailsService.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,10 +24,10 @@
       <list>
         <option value="Enum" />
         <option value="package-info" />
-        <option value="Interface" />
         <option value="com.intellij.jpb.JpaRepository" />
         <option value="Record" />
         <option value="Exception" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -206,7 +199,7 @@
       <option name="presentableId" value="Default" />
       <updated>1769974164088</updated>
       <workItem from="1769974165428" duration="45373000" />
-      <workItem from="1770316911948" duration="1761000" />
+      <workItem from="1770316911948" duration="11109000" />
     </task>
     <task id="LOCAL-00001" summary="add appointment domain and common-lib. refactor constructor in user-service">
       <option name="closed" value="true" />
@@ -232,17 +225,37 @@
       <option name="project" value="LOCAL" />
       <updated>1770314190465</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add role based auth, refresh token, redis for storing refresh token">
+      <option name="closed" value="true" />
+      <created>1770326373127</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1770326373127</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add appointment domain and common-lib. refactor constructor in user-service" />
     <MESSAGE value="add config server, eureka server, usershadow entity in appointment service" />
     <MESSAGE value="add gateway, auth, jwt generate to user service" />
-    <option name="LAST_COMMIT_MESSAGE" value="add gateway, auth, jwt generate to user service" />
+    <MESSAGE value="add role based auth, refresh token, redis for storing refresh token" />
+    <option name="LAST_COMMIT_MESSAGE" value="add role based auth, refresh token, redis for storing refresh token" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
