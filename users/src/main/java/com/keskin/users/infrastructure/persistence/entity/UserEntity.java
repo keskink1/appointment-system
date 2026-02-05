@@ -1,6 +1,6 @@
 package com.keskin.users.infrastructure.persistence.entity;
 
-import com.keskin.users.domain.model.Role;
+import com.keskin.common.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,8 +1,7 @@
 package com.keskin.users.application.service;
 
-import com.keskin.users.application.dto.CreateUserRequestDto;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
-import com.keskin.users.application.dto.UserDto;
+import com.keskin.common.dto.UserDto;
 import com.keskin.users.application.mapper.UserMapper;
 import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.common.exception.ResourceNotFoundException;
@@ -49,22 +48,7 @@ public class UserAppService {
                 new ResourceNotFoundException("User", "Email", email));
     }
 
-    @Transactional
-    public UserDto registerUser(CreateUserRequestDto request) {
-        if (userRepository.existsByEmailAndDeletedFalse(request.email())) {
-            throw new ResourceAlreadyExistsException("User", "Email", request.email());
-        }
 
-        User user = User.createUser(
-                request.name(),
-                request.age(),
-                request.email(),
-                request.password()
-                );
-        userRepository.saveUser(user);
-
-        return userMapper.toDto(user);
-    }
 
     @Transactional
     public UserDto updateUserById(UUID uuid, UpdateUserRequestDto request) {

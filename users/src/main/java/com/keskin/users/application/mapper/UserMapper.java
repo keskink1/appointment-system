@@ -1,7 +1,7 @@
 package com.keskin.users.application.mapper;
 
 
-import com.keskin.users.application.dto.UserDto;
+import com.keskin.common.dto.UserDto;
 import com.keskin.users.domain.model.User;
 import org.springframework.stereotype.Component;
 

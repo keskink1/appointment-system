@@ -1,4 +1,4 @@
-package com.keskin.common.dto;
+package com.keskin.common.dto.response;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.keskin.users.application.dto;
+package com.keskin.common.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;

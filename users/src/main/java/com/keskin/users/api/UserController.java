@@ -1,8 +1,8 @@
 package com.keskin.users.api;
 
-import com.keskin.users.application.dto.CreateUserRequestDto;
+import com.keskin.common.dto.request.CreateUserRequestDto;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
-import com.keskin.users.application.dto.UserDto;
+import com.keskin.common.dto.UserDto;
 import com.keskin.users.application.service.UserAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,19 +24,6 @@ public class UserController {
     public ResponseEntity<UserDto> getById(@PathVariable UUID id){
         UserDto response = userAppService.getUserDtoById(id);
         return ResponseEntity.ok(response);
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody CreateUserRequestDto request) {
-        UserDto response = userAppService.registerUser(request);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response.id())
-                .toUri();
-
-        return ResponseEntity.created(location).body(response);
     }
 
     @GetMapping("/search")

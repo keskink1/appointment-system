@@ -1,7 +1,7 @@
-package com.keskin.users.application.dto;
+package com.keskin.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.keskin.users.domain.model.Role;
+import com.keskin.common.enums.Role;
 
 import java.util.UUID;
 

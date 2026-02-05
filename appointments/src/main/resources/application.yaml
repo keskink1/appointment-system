@@ -1,3 +1,5 @@
 spring:
   application:
-    name: appointments
+    name: appointment-service
+  config:
+    import: "optional:configserver:http://localhost:8888"

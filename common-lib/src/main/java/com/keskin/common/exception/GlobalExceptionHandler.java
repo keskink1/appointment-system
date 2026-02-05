@@ -1,6 +1,6 @@
 package com.keskin.common.exception;
 
-import com.keskin.common.dto.ErrorResponseDto;
+import com.keskin.common.dto.response.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +39,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGeneralException(Exception ex) {
         return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred: " + ex.getMessage());
+    }
+
+    // 401
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDto> handleInvalidLoginCredentials() {
+        return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Invalid email or password");
     }
 
     private ResponseEntity<ErrorResponseDto> buildErrorResponse(HttpStatus status, String message) {

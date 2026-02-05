@@ -7,6 +7,7 @@ import com.keskin.users.infrastructure.persistence.mapper.UserPersistenceMapper;
 import com.keskin.users.infrastructure.persistence.repository.JpaUserRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,6 +16,12 @@ public class SqlUserRepositoryImpl implements UserRepository {
 
     private final JpaUserRepository jpaUserRepository;
     private final UserPersistenceMapper userMapper;
+
+    //cacheable, pagination
+    @Override
+    public List<User> findAllUsers() {
+        return List.of();
+    }
 
     public SqlUserRepositoryImpl(JpaUserRepository entityRepository, UserPersistenceMapper userMapper) {
         this.jpaUserRepository = entityRepository;

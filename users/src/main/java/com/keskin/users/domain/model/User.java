@@ -1,5 +1,6 @@
 package com.keskin.users.domain.model;
 
+import com.keskin.common.enums.Role;
 import com.keskin.common.model.BaseEntity;
 import com.keskin.users.domain.valueobject.Age;
 import com.keskin.users.domain.valueobject.Email;

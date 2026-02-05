@@ -1,6 +1,6 @@
 package com.keskin.users.application.service;
 
-import com.keskin.users.application.dto.CreateUserRequestDto;
+import com.keskin.common.dto.request.CreateUserRequestDto;
 import com.keskin.users.application.mapper.UserMapper;
 import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.users.domain.model.User;
@@ -28,6 +28,9 @@ class UserAppServiceTest {
     @InjectMocks
     private UserAppService userAppService;
 
+    @InjectMocks
+    private AuthAppService authAppService;
+
     @Test
     @DisplayName("Should register user successfully when email is unique")
     void shouldRegisterUserSuccessfully() {
@@ -37,7 +40,7 @@ class UserAppServiceTest {
         );
         when(userRepository.existsByEmailAndDeletedFalse(anyString())).thenReturn(false);
 
-        userAppService.registerUser(request);
+        authAppService.registerUser(request);
 
         verify(userRepository, times(1)).saveUser(any(User.class));
     }
@@ -51,7 +54,7 @@ class UserAppServiceTest {
         when(userRepository.existsByEmailAndDeletedFalse("duplicate@mail.com")).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> {
-            userAppService.registerUser(request);
+            authAppService.registerUser(request);
         });
     }
 }

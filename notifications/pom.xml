@@ -76,6 +76,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Micro meter for trace id etc-->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+		</dependency>
+
 		<!-- Lombok-->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
