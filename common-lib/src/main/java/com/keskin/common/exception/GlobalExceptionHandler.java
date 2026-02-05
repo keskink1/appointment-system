@@ -47,6 +47,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Invalid email or password");
     }
 
+    // 403
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponseDto> handleForbidden(UnauthorizedException ex) {
+        return buildErrorResponse(HttpStatus.FORBIDDEN , "You are not authorized!" + ex.getMessage());
+    }
+
     private ResponseEntity<ErrorResponseDto> buildErrorResponse(HttpStatus status, String message) {
         ErrorResponseDto error = new ErrorResponseDto(
                 status.value(),

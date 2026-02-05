@@ -10,6 +10,8 @@ import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.application.mapper.UserMapper;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
+import com.keskin.users.infrastructure.persistence.entity.RefreshToken;
+import com.keskin.users.infrastructure.persistence.repository.RefreshTokenRepository;
 import com.keskin.users.infrastructure.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,19 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class AuthAppService {
 
     private final UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthAppService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     private String trimString(String value){
         return value.trim();
@@ -52,14 +50,26 @@ public class AuthAppService {
         );
         userRepository.saveUser(user);
 
-        String token = jwtTokenProvider.generateToken(
+        String accessToken = jwtTokenProvider.generateToken(
                 user.getUuid(),
                 user.getEmail().value(),
                 user.getRole().name()
         );
 
+        String refreshTokenStr = jwtTokenProvider.generateRefreshToken(
+                user.getUuid(),
+                user.getEmail().value()
+        );
+
+        RefreshToken redisToken = RefreshToken.builder()
+                .token(refreshTokenStr)
+                .userUuid(user.getUuid())
+                .userEmail(user.getEmail().value())
+                .build();
+        refreshTokenRepository.save(redisToken);
+
         UserDto userDto = userMapper.toDto(user);
-        return new AuthResponseDto(userDto, token);
+        return new AuthResponseDto(userDto, accessToken,refreshTokenStr);
     }
 
     @Transactional
@@ -72,13 +82,36 @@ public class AuthAppService {
             throw new AuthenticationException("");
         }
 
-        String token = jwtTokenProvider.generateToken(
+        String accessToken = jwtTokenProvider.generateToken(
                 user.getUuid(),
                 user.getEmail().value(),
                 user.getRole().name()
         );
 
+        String refreshTokenStr = jwtTokenProvider.generateRefreshToken(
+                user.getUuid(),
+                user.getEmail().value()
+        );
+
+        RefreshToken redisToken = RefreshToken.builder()
+                .token(refreshTokenStr)
+                .userUuid(user.getUuid())
+                .userEmail(user.getEmail().value())
+                .build();
+        refreshTokenRepository.save(redisToken);
+
         UserDto userDto = userMapper.toDto(user);
-        return new AuthResponseDto(userDto, token);
+        return new AuthResponseDto(userDto, accessToken, refreshTokenStr);
+    }
+
+    public String refreshMyAccessToken(String refreshToken) {
+        return refreshTokenRepository.findById(refreshToken)
+                .map(token -> jwtTokenProvider.generateToken(token.getUserUuid(), token.getUserEmail(), "USER"))
+                .orElseThrow(() -> new AuthenticationException("Session expired"));
+    }
+
+    @Transactional
+    public void logout(String refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
     }
 }

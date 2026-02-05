@@ -7,10 +7,7 @@ import com.keskin.common.dto.response.AuthResponseDto;
 import com.keskin.users.application.service.AuthAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -40,5 +37,17 @@ public class AuthController {
         AuthResponseDto response = authAppService.loginUser(request);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<String> refresh(@RequestParam("refreshToken") String refreshToken) {
+        String newAccessToken = authAppService.refreshMyAccessToken(refreshToken);
+        return ResponseEntity.ok(newAccessToken);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestParam("refreshToken") String refreshToken) {
+        authAppService.logout(refreshToken);
+        return ResponseEntity.noContent().build();
     }
 }

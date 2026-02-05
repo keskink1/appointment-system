@@ -4,6 +4,7 @@ import com.keskin.common.dto.UserDto;
 
 public record AuthResponseDto(
         UserDto userDto,
-        String token
+        String accessToken,
+        String refreshTokenStr
 ) {
 }

@@ -1,15 +1,14 @@
 package com.keskin.users.api;
 
-import com.keskin.common.dto.request.CreateUserRequestDto;
-import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.common.dto.UserDto;
+import com.keskin.common.enums.Role;
+import com.keskin.common.util.AuthorizationUtil;
+import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.users.application.service.UserAppService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -19,52 +18,95 @@ public class UserController {
 
     private final UserAppService userAppService;
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getById(@PathVariable UUID id){
-        UserDto response = userAppService.getUserDtoById(id);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<UserDto> getById(
+            @PathVariable UUID id,
+            @RequestHeader("X-User-Id") String currentUserIdHeader,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkUserAccess(id, UUID.fromString(currentUserIdHeader), role);
+
+        return ResponseEntity.ok(userAppService.getUserDtoById(id));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<UserDto> getByEmail(@RequestParam String email) {
-        UserDto response = userAppService.getUserDtoByEmail(email);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<UserDto> getByEmail(
+            @RequestParam String email,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        if (role != Role.ADMIN) {
+            AuthorizationUtil.checkDeletePermission(role);
+        }
+
+        return ResponseEntity.ok(userAppService.getUserDtoByEmail(email));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateById(@PathVariable UUID id, @RequestBody UpdateUserRequestDto request){
-        UserDto response = userAppService.updateUserById(id, request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<UserDto> updateById(
+            @PathVariable UUID id,
+            @RequestBody UpdateUserRequestDto request,
+            @RequestHeader("X-User-Id") String currentUserIdHeader,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkUserAccess(id, UUID.fromString(currentUserIdHeader), role);
+
+        return ResponseEntity.ok(userAppService.updateUserById(id, request));
     }
 
+    // --- ADMIN ONLY ---
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable UUID id){
+    public ResponseEntity<Void> deleteById(
+            @PathVariable UUID id,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkDeletePermission(role);
+
         userAppService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/promote")
-    public ResponseEntity<UserDto> promoteToAdmin(@PathVariable UUID id){
-        UserDto dto = userAppService.promoteToAdmin(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDto> promoteToAdmin(
+            @PathVariable UUID id,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkDeletePermission(role);
+        return ResponseEntity.ok(userAppService.promoteToAdmin(id));
     }
 
     @PutMapping("/{id}/changeRole")
-    public ResponseEntity<UserDto> changeRoleToEmployee(@PathVariable UUID id){
-        UserDto dto = userAppService.changeRoleToEmployee(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDto> changeRoleToEmployee(
+            @PathVariable UUID id,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkDeletePermission(role);
+        return ResponseEntity.ok(userAppService.changeRoleToEmployee(id));
     }
 
     @PutMapping("/{id}/activate")
-    public ResponseEntity<UserDto> activateUser(@PathVariable UUID id){
-        UserDto dto = userAppService.activateUser(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDto> activateUser(
+            @PathVariable UUID id,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkDeletePermission(role);
+        return ResponseEntity.ok(userAppService.activateUser(id));
     }
 
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<UserDto> deactivateUser(@PathVariable UUID id){
-        UserDto dto = userAppService.deactivateUser(id);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<UserDto> deactivateUser(
+            @PathVariable UUID id,
+            @RequestHeader("X-User-Role") String roleHeader) {
+
+        Role role = AuthorizationUtil.parseRole(roleHeader);
+        AuthorizationUtil.checkDeletePermission(role);
+        return ResponseEntity.ok(userAppService.deactivateUser(id));
     }
 }
