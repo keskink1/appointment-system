@@ -36,11 +36,11 @@ public class User extends BaseEntity {
         this.active = active;
     }
 
-    public static User createUser(String name, Integer age, String email, String password) {
+    public static User createUser(String createdBy, String name, Integer age, String email, String password) {
         return new User(
                 UUID.randomUUID(),
                 LocalDateTime.now(),
-                "SYSTEM", // change after jwt
+                createdBy,
                 false, // deleted
                 null,  // deletedAt
                 null,  // deletedBy
@@ -53,25 +53,29 @@ public class User extends BaseEntity {
         );
     }
 
-    public void activate() {
+    public void activate(String updatedBy) {
         if (this.active) {
             throw new IllegalStateException("User is already active");
         }
+        this.updateAudit(updatedBy);
         this.active = true;
     }
 
-    public void deactivate() {
+    public void deactivate(String updatedBy) {
         if (!this.active) {
             throw new IllegalStateException("User is already inactive");
         }
+        this.updateAudit(updatedBy);
         this.active = false;
     }
 
-    public void changeRoleToEmployee(){
+    public void changeRoleToEmployee(String updatedBy){
+        this.updateAudit(updatedBy);
         this.role = (Role.EMPLOYEE);
     }
 
-    public void promoteToAdmin(){
+    public void promoteToAdmin(String updatedBy){
+        this.updateAudit(updatedBy);
         this.role = (Role.ADMIN);
     }
 
@@ -79,9 +83,15 @@ public class User extends BaseEntity {
         if (isDeleted()){
             throw new IllegalStateException("Deleted user can't be updated");
         }
-        this.name = new Name(newNameValue);
-        this.age = new Age(newAgeValue);
-        this.email = new Email(newEmailValue);
+        if (newNameValue != null && !newNameValue.isBlank()){
+            this.name = new Name(newNameValue);
+        }
+        if (newAgeValue != null){
+            this.age = new Age(newAgeValue);
+        }
+        if (newEmailValue != null && !newEmailValue.isBlank()){
+            this.email = new Email(newEmailValue);
+        }
         super.updateAudit(updatedBy);
     }
 

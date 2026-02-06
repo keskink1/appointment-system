@@ -6,18 +6,23 @@ import com.keskin.common.dto.request.LoginRequestDto;
 import com.keskin.common.dto.response.AuthResponseDto;
 import com.keskin.common.exception.AuthenticationException;
 import com.keskin.common.exception.ResourceAlreadyExistsException;
-import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.application.mapper.UserMapper;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import com.keskin.users.infrastructure.persistence.entity.RefreshToken;
 import com.keskin.users.infrastructure.persistence.repository.RefreshTokenRepository;
 import com.keskin.users.infrastructure.security.JwtTokenProvider;
+import com.keskin.users.infrastructure.security.UserContextHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+/**
+ * Service for handling authentication flows: Registration, Login, Token Refresh, and Logout.
+ * Uses JWT for access tokens and Redis-backed Refresh Tokens for session management.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthAppService {
@@ -29,20 +34,26 @@ public class AuthAppService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    private String trimString(String value){
-        return value.trim();
+    private String normaliseString(String value) {
+        return value.toLowerCase().trim();
     }
 
+    /**
+     * Registers a new user, hashes the password, and creates an initial session.
+     * @throws ResourceAlreadyExistsException if email is already registered.
+     */
     @Transactional
     public AuthResponseDto registerUser(CreateUserRequestDto request) {
-        String email = trimString(request.email());
+        String email = normaliseString(request.email());
         if (userRepository.existsByEmailAndDeletedFalse(email)) {
             throw new ResourceAlreadyExistsException("User", "Email", request.email());
         }
 
         String encodedPassword = passwordEncoder.encode(request.password());
 
+        String actorEmail = UserContextHelper.getCurrentUserEmail();
         User user = User.createUser(
+                actorEmail,
                 request.name(),
                 request.age(),
                 request.email(),
@@ -65,20 +76,22 @@ public class AuthAppService {
                 .token(refreshTokenStr)
                 .userUuid(user.getUuid())
                 .userEmail(user.getEmail().value())
+                .userRole(user.getRole().name())
                 .build();
         refreshTokenRepository.save(redisToken);
 
         UserDto userDto = userMapper.toDto(user);
-        return new AuthResponseDto(userDto, accessToken,refreshTokenStr);
+        return new AuthResponseDto(userDto, accessToken, refreshTokenStr);
     }
 
-    @Transactional
-    public AuthResponseDto loginUser(LoginRequestDto requestDto){
-        String email = trimString(requestDto.email());
-        User user = userRepository.findByEmail(email).orElseThrow(() ->
-            new AuthenticationException(""));
 
-        if(!passwordEncoder.matches(requestDto.password(), user.getPassword().value())){
+    @Transactional
+    public AuthResponseDto loginUser(LoginRequestDto requestDto) {
+        String email = normaliseString(requestDto.email());
+        User user = userRepository.findByEmail(email).orElseThrow(() ->
+                new AuthenticationException(""));
+
+        if (!passwordEncoder.matches(requestDto.password(), user.getPassword().value())) {
             throw new AuthenticationException("");
         }
 
@@ -97,6 +110,7 @@ public class AuthAppService {
                 .token(refreshTokenStr)
                 .userUuid(user.getUuid())
                 .userEmail(user.getEmail().value())
+                .userRole(user.getRole().name())
                 .build();
         refreshTokenRepository.save(redisToken);
 
@@ -104,9 +118,20 @@ public class AuthAppService {
         return new AuthResponseDto(userDto, accessToken, refreshTokenStr);
     }
 
+    /**
+     * Generates a new Access Token using a valid Refresh Token from Redis.
+     * @param refreshToken The token stored in the client and Redis.
+     * @return New JWT Access Token.
+     * @throws AuthenticationException if the refresh token is missing or expired.
+     */
     public String refreshMyAccessToken(String refreshToken) {
         return refreshTokenRepository.findById(refreshToken)
-                .map(token -> jwtTokenProvider.generateToken(token.getUserUuid(), token.getUserEmail(), "USER"))
+                .map(token -> jwtTokenProvider.generateToken(
+                                token.getUserUuid(),
+                                token.getUserEmail(),
+                                token.getUserRole()
+                        )
+                )
                 .orElseThrow(() -> new AuthenticationException("Session expired"));
     }
 

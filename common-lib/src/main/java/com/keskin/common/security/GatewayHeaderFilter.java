@@ -1,5 +1,6 @@
 package com.keskin.common.security;
 
+import com.keskin.common.dto.UserPrincipalDto;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,17 +13,24 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.keskin.common.constants.AppConstants.*;
+
 public class GatewayHeaderFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String userId = request.getHeader("X-User-Id");
-        String role = request.getHeader("X-User-Role");
+        String userId = request.getHeader(HEADER_USER_ID);
+        String role = request.getHeader(HEADER_USER_ROLE);
+        String email = request.getHeader(HEADER_USER_MAIL);
 
-        if (userId != null && !userId.equals("null")) {
+        UserPrincipalDto principal = new UserPrincipalDto(userId, email);
+
+        if (userId != null && !userId.isBlank() && !userId.equals("null") &&
+                role != null && !role.isBlank() && !role.equals("null")) {
+
             var auth = new UsernamePasswordAuthenticationToken(
-                    userId,
+                    principal,
                     null,
                     List.of(new SimpleGrantedAuthority("ROLE_" + role))
             );

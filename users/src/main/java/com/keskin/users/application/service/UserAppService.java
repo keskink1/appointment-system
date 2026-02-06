@@ -7,22 +7,25 @@ import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
+import com.keskin.users.infrastructure.security.UserContextHelper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+
 @Service
+@RequiredArgsConstructor
 public class UserAppService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UserAppService(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
 
+    private String getActorAudit(){
+        return UserContextHelper.getCurrentUserEmail();
+    }
 
     @Transactional(readOnly = true)
     public UserDto getUserDtoById(UUID uuid) {
@@ -36,6 +39,9 @@ public class UserAppService {
         return userMapper.toDto(user);
     }
 
+    /**
+     * @throws ResourceNotFoundException if user is not found.
+     */
     @Transactional(readOnly = true)
     public User findById(UUID uuid) {
         return userRepository.findById(uuid).orElseThrow(() ->
@@ -49,7 +55,10 @@ public class UserAppService {
     }
 
 
-
+    /**
+     * Updates user and checks for email uniqueness if email is changed.
+     * @throws ResourceAlreadyExistsException if new email is already taken.
+     */
     @Transactional
     public UserDto updateUserById(UUID uuid, UpdateUserRequestDto request) {
         User user = findById(uuid);
@@ -60,25 +69,31 @@ public class UserAppService {
             }
         }
 
-        user.updateUser(request.name(), request.age(), request.email(), "SYSTEM"); // update when JWT
+        String actorEmail = getActorAudit();
+        user.updateUser(request.name(), request.age(), request.email(), actorEmail);
 
         userRepository.saveUser(user);
 
         return userMapper.toDto(user);
     }
 
+    /**
+     * Performs a soft delete by marking the user as deleted.
+     */
     @Transactional
     public void deleteUserById(UUID uuid){
         User user = findById(uuid);
 
-        user.deleteUser("SYSTEM"); //change when jwt
+        String actorEmail = getActorAudit();
+        user.deleteUser(actorEmail);
         userRepository.saveUser(user);
     }
 
     @Transactional
     public UserDto promoteToAdmin(UUID uuid){
         User user = findById(uuid);
-        user.promoteToAdmin();
+        String actorEmail = getActorAudit();
+        user.promoteToAdmin(actorEmail);
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
@@ -86,7 +101,8 @@ public class UserAppService {
     @Transactional
     public UserDto changeRoleToEmployee(UUID uuid){
         User user = findById(uuid);
-        user.changeRoleToEmployee();
+        String actorEmail = getActorAudit();
+        user.changeRoleToEmployee(actorEmail);
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
@@ -94,7 +110,8 @@ public class UserAppService {
     @Transactional
     public UserDto activateUser(UUID uuid){
         User user = findById(uuid);
-        user.activate();
+        String actorEmail = getActorAudit();
+        user.activate(actorEmail);
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
@@ -102,7 +119,8 @@ public class UserAppService {
     @Transactional
     public UserDto deactivateUser(UUID uuid){
         User user = findById(uuid);
-        user.deactivate();
+        String actorEmail = getActorAudit();
+        user.deactivate(actorEmail);
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }

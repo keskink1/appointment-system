@@ -4,15 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="add role based auth, refresh token, redis for storing refresh token">
+    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="bugfix gatewayheaderfilter">
+      <change afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/constants/AppConstants.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/UserPrincipalDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/UserContextHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/exception/GlobalExceptionHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/GatewayHeaderFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/GatewayHeaderFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/dto/response/AuthResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/dto/response/AuthResponseDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/AuthorizationUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/AuthorizationUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/util/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/src/main/java/com/keskin/gatewayserver/util/JwtUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/users/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/UsersApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/UsersApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/AuthAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/AuthAppService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/CustomUserDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/entity/RefreshToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/entity/RefreshToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/repository/impl/SqlUserRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/repository/impl/SqlUserRepositoryImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/model/UserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/model/UserTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +36,10 @@
         <option value="Enum" />
         <option value="package-info" />
         <option value="com.intellij.jpb.JpaRepository" />
-        <option value="Record" />
         <option value="Exception" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -199,7 +210,7 @@
       <option name="presentableId" value="Default" />
       <updated>1769974164088</updated>
       <workItem from="1769974165428" duration="45373000" />
-      <workItem from="1770316911948" duration="11109000" />
+      <workItem from="1770316911948" duration="19066000" />
     </task>
     <task id="LOCAL-00001" summary="add appointment domain and common-lib. refactor constructor in user-service">
       <option name="closed" value="true" />
@@ -233,7 +244,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770326373127</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="bugfix gatewayheaderfilter">
+      <option name="closed" value="true" />
+      <created>1770328560579</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1770328560579</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -255,7 +274,8 @@
     <MESSAGE value="add config server, eureka server, usershadow entity in appointment service" />
     <MESSAGE value="add gateway, auth, jwt generate to user service" />
     <MESSAGE value="add role based auth, refresh token, redis for storing refresh token" />
-    <option name="LAST_COMMIT_MESSAGE" value="add role based auth, refresh token, redis for storing refresh token" />
+    <MESSAGE value="bugfix gatewayheaderfilter" />
+    <option name="LAST_COMMIT_MESSAGE" value="bugfix gatewayheaderfilter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

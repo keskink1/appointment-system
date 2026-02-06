@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Persistence adapter implementation for SQL databases.
+ * Bridges the Domain Repository interface with Spring Data JPA.
+ */
 @Repository
 public class SqlUserRepositoryImpl implements UserRepository {
 

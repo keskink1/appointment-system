@@ -6,9 +6,7 @@ import java.util.UUID;
 
 public final class AuthorizationUtil {
 
-    private AuthorizationUtil() {
-        // Private constructor to prevent instantiation
-    }
+    private AuthorizationUtil() {}
 
     /**
      * Checks if the current user has permission to access a specific user's resource.
@@ -16,14 +14,12 @@ public final class AuthorizationUtil {
      * USER can only access their own record.
      */
     public static void checkUserAccess(UUID targetUserId, UUID currentUserId, Role currentUserRole) {
-        // Admins and Managers have full access
         if (currentUserRole == Role.ADMIN) {
             return;
         }
 
-        // Users can only access their own data
         if (!targetUserId.equals(currentUserId)) {
-            throw new UnauthorizedException("Unauthorized Access: You can only access your own records.");
+            throw new UnauthorizedException("");
         }
     }
 
@@ -31,9 +27,9 @@ public final class AuthorizationUtil {
      * Validates if the current user has delete permissions.
      * Only ADMIN role is allowed to perform deletion.
      */
-    public static void checkDeletePermission(Role currentUserRole) {
+    public static void checkPermission(Role currentUserRole) {
         if (currentUserRole != Role.ADMIN) {
-            throw new UnauthorizedException("Unauthorized Action: Only ADMIN can perform delete operations.");
+            throw new UnauthorizedException("");
         }
     }
 
@@ -43,7 +39,7 @@ public final class AuthorizationUtil {
      */
     public static Role parseRole(String roleHeader) {
         if (roleHeader == null || roleHeader.isBlank()) {
-            throw new UnauthorizedException("Missing security role header.");
+            throw new UnauthorizedException("");
         }
 
         try {
@@ -52,7 +48,7 @@ public final class AuthorizationUtil {
                     : roleHeader;
             return Role.valueOf(roleName.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new UnauthorizedException("Invalid security role: " + roleHeader);
+            throw new UnauthorizedException(" Invalid security role: " + roleHeader);
         }
     }
 }
