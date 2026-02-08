@@ -1,10 +1,15 @@
 package com.keskin.users.infrastructure.persistence.repository.impl;
 
+import com.keskin.common.dto.response.PaginatedResponseDto;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import com.keskin.users.infrastructure.persistence.entity.UserEntity;
 import com.keskin.users.infrastructure.persistence.mapper.UserPersistenceMapper;
 import com.keskin.users.infrastructure.persistence.repository.JpaUserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,15 +26,41 @@ public class SqlUserRepositoryImpl implements UserRepository {
     private final JpaUserRepository jpaUserRepository;
     private final UserPersistenceMapper userMapper;
 
-    //cacheable, pagination
-    @Override
-    public List<User> findAllUsers() {
-        return List.of();
-    }
-
     public SqlUserRepositoryImpl(JpaUserRepository entityRepository, UserPersistenceMapper userMapper) {
         this.jpaUserRepository = entityRepository;
         this.userMapper = userMapper;
+    }
+
+    /**
+     * Retrieves a paginated list of users from the database, sorted by creation date.
+     * <p>
+     * This method converts the Spring Data JPA {@link Page} result into a domain-specific
+     * {@link PaginatedResponseDto} to ensure the Domain layer remains decoupled from
+     * persistence framework dependencies.
+     * </p>
+     *
+     * @param page The zero-based page index to retrieve.
+     * @param size The number of records per page.
+     * @return A {@link PaginatedResponseDto} containing the list of {@link User} domain models
+     * and pagination metadata (total elements, total pages, etc.).
+     */
+    @Override
+    public PaginatedResponseDto<User> findAllUsers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
+        Page<UserEntity> entityPage = jpaUserRepository.findAll(pageable);
+
+        List<User> domainUsers = entityPage
+                .getContent()
+                .stream()
+                .map(userMapper::toDomain)
+                .toList();
+
+        return new PaginatedResponseDto<>(
+                domainUsers,
+                entityPage.getTotalElements(),
+                entityPage.getTotalPages(),
+                entityPage.getNumber()
+        );
     }
 
     @Override

@@ -19,7 +19,7 @@ public final class AuthorizationUtil {
         }
 
         if (!targetUserId.equals(currentUserId)) {
-            throw new UnauthorizedException("");
+            throw new UnauthorizedException("No authorization");
         }
     }
 
@@ -27,9 +27,9 @@ public final class AuthorizationUtil {
      * Validates if the current user has delete permissions.
      * Only ADMIN role is allowed to perform deletion.
      */
-    public static void checkPermission(Role currentUserRole) {
+    public static void checkAdmin(Role currentUserRole) {
         if (currentUserRole != Role.ADMIN) {
-            throw new UnauthorizedException("");
+            throw new UnauthorizedException("Only admin can perform this action!");
         }
     }
 

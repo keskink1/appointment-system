@@ -1,5 +1,6 @@
 package com.keskin.users.application.service;
 
+import com.keskin.common.dto.response.PaginatedResponseDto;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.common.dto.UserDto;
 import com.keskin.users.application.mapper.UserMapper;
@@ -8,10 +9,13 @@ import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import com.keskin.users.infrastructure.security.UserContextHelper;
+import org.springframework.cache.annotation.Cacheable;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -25,6 +29,24 @@ public class UserAppService {
 
     private String getActorAudit(){
         return UserContextHelper.getCurrentUserEmail();
+    }
+
+    @Cacheable(value = "users", key = "#page + '-' + #size")
+    @Transactional(readOnly = true)
+    public PaginatedResponseDto<UserDto> findAll(int page, int size) {
+
+        var userPage = userRepository.findAllUsers(page, size);
+
+        List<UserDto> dtos = userPage.data().stream()
+                .map(userMapper::toDto)
+                .toList();
+
+        return new PaginatedResponseDto<>(
+                dtos,
+                userPage.totalElements(),
+                userPage.totalPages(),
+                userPage.currentPage()
+        );
     }
 
     @Transactional(readOnly = true)
@@ -59,6 +81,7 @@ public class UserAppService {
      * Updates user and checks for email uniqueness if email is changed.
      * @throws ResourceAlreadyExistsException if new email is already taken.
      */
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public UserDto updateUserById(UUID uuid, UpdateUserRequestDto request) {
         User user = findById(uuid);
@@ -80,6 +103,7 @@ public class UserAppService {
     /**
      * Performs a soft delete by marking the user as deleted.
      */
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public void deleteUserById(UUID uuid){
         User user = findById(uuid);
@@ -89,6 +113,7 @@ public class UserAppService {
         userRepository.saveUser(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public UserDto promoteToAdmin(UUID uuid){
         User user = findById(uuid);
@@ -98,6 +123,7 @@ public class UserAppService {
         return userMapper.toDto(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public UserDto changeRoleToEmployee(UUID uuid){
         User user = findById(uuid);
@@ -107,6 +133,7 @@ public class UserAppService {
         return userMapper.toDto(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public UserDto activateUser(UUID uuid){
         User user = findById(uuid);
@@ -116,6 +143,7 @@ public class UserAppService {
         return userMapper.toDto(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     @Transactional
     public UserDto deactivateUser(UUID uuid){
         User user = findById(uuid);

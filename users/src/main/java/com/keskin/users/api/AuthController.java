@@ -1,6 +1,5 @@
 package com.keskin.users.api;
 
-import com.keskin.common.dto.UserDto;
 import com.keskin.common.dto.request.CreateUserRequestDto;
 import com.keskin.common.dto.request.LoginRequestDto;
 import com.keskin.common.dto.response.AuthResponseDto;

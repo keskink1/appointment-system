@@ -55,8 +55,6 @@ public class GlobalExceptionHandler {
     }
 
 
-
-
     /**
      * Handles authentication failures, such as incorrect credentials.
      * @return 401 Unauthorized

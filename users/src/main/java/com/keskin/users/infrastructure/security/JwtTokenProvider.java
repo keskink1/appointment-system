@@ -34,7 +34,7 @@ public class JwtTokenProvider {
         return buildToken(
                 userId,
                 email,
-                null,
+                "REFRESH_TOKEN",
                 jwtConfig.refreshTokenExpiration());
     }
 
