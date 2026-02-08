@@ -15,7 +15,7 @@ public class UserEventPublisher {
     private final RabbitTemplate rabbitTemplate;
 
     public void publishUserCreated(UserCreatedEvent event){
-        log.info("Publishing user created event for the id of {} ", event.uuid());
+        log.info("Publishing user created event for the id of {} ", event.userId());
 
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.USER_EXCHANGE,

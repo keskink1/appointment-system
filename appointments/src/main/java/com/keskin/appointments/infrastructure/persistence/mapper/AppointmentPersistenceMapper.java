@@ -1,8 +1,6 @@
 package com.keskin.appointments.infrastructure.persistence.mapper;
 
 import com.keskin.appointments.domain.model.Appointment;
-import com.keskin.appointments.domain.valueobject.AppointmentTime;
-import com.keskin.appointments.domain.valueobject.UserShadow;
 import com.keskin.appointments.infrastructure.persistence.entity.AppointmentEntity;
 import org.springframework.stereotype.Component;
 

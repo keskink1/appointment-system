@@ -21,7 +21,7 @@ import java.util.UUID;
 public class UserEntity implements UserDetails {
 
     @Id
-    @Column(name = "uuid", updatable = false, nullable = false)
+    @Column(name = "userId", updatable = false, nullable = false)
     private UUID uuid;
 
     @Column(name = "name", nullable = false)

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public record UserCreatedEvent(
-        UUID uuid,
+        UUID userId,
         String name,
         String email,
         long occurredAt // leave as long instead of localdatetime for serialization
