@@ -1,8 +1,14 @@
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/constants/AppConstants.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/UserDto.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/UserPrincipalDto.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/event/UserCreatedEvent.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/event/UserDeletedEvent.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/event/UserUpdatedEvent.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/request/CreateUserRequestDto.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/request/LoginRequestDto.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/response/AuthResponseDto.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/response/ErrorResponseDto.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/response/PaginatedResponseDto.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/enums/Role.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/AuthenticationException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/GlobalExceptionHandler.java
@@ -10,6 +16,10 @@
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/NoEmptyFieldException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/ResourceAlreadyExistsException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/ResourceNotFoundException.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/UnauthorizedException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/model/BaseEntity.java
-/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/BaseSecurityConfig.java
-/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/GatewayHeaderFilter.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/annotation/RequiresAdmin.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/aspect/RoleCheckAspect.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/config/AbstractSecurityConfig.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/filter/GatewayHeaderFilter.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/util/AuthorizationUtil.java

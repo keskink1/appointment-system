@@ -20,10 +20,11 @@ import java.util.UUID;
 @AllArgsConstructor
 public class UserShadowEntity {
 
-    public UserShadowEntity(UUID userId, String userName, String userEmail) {
+    public UserShadowEntity(UUID userId, String userName, String userEmail,boolean userActive) {
         this.userId = userId;
         this.userName = userName;
         this.userEmail = userEmail;
+        this.userActive = userActive;
     }
 
     @Id
@@ -38,4 +39,7 @@ public class UserShadowEntity {
 
     @Column(name = "sync_at")
     private LocalDateTime syncAt = LocalDateTime.now();
+
+    @Column(name = "is_user_active")
+    private boolean userActive;
 }

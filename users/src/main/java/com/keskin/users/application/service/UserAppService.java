@@ -1,5 +1,6 @@
 package com.keskin.users.application.service;
 
+import com.keskin.common.dto.event.UserUpdatedEvent;
 import com.keskin.common.dto.response.PaginatedResponseDto;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.common.dto.UserDto;
@@ -8,6 +9,7 @@ import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
+import com.keskin.users.infrastructure.persistence.message.UserEventPublisher;
 import com.keskin.users.infrastructure.security.UserContextHelper;
 import org.springframework.cache.annotation.Cacheable;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class UserAppService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserEventPublisher userEventPublisher;
 
 
     private String getActorAudit(){
@@ -78,8 +81,21 @@ public class UserAppService {
 
 
     /**
-     * Updates user and checks for email uniqueness if email is changed.
-     * @throws ResourceAlreadyExistsException if new email is already taken.
+     * Updates an existing user's details and triggers data synchronization across the system.
+     * <p>
+     * This method ensures high consistency by:
+     * 1. Performing an email uniqueness check only if the email address is being modified.
+     * 2. Updating the User domain entity using the provided request data and audit information.
+     * 3. Evicting the 'users' cache to prevent stale data in listings.
+     * 4. Publishing a {@link UserUpdatedEvent} via RabbitMQ to synchronize the changes
+     * with shadow tables in other microservices (e.g., Appointment Service).
+     * </p>
+     *
+     * @param uuid The unique identifier of the user to be updated.
+     * @param request The DTO containing the updated user information (name, age, email).
+     * @return {@link UserDto} representing the updated state of the user.
+     * @throws ResourceAlreadyExistsException if the new email is already registered by another user.
+     * @throws ResourceNotFoundException if no user exists with the given UUID.
      */
     @CacheEvict(value = "users", allEntries = true)
     @Transactional
@@ -96,6 +112,15 @@ public class UserAppService {
         user.updateUser(request.name(), request.age(), request.email(), actorEmail);
 
         userRepository.saveUser(user);
+
+        UserUpdatedEvent event = new UserUpdatedEvent(
+                user.getUuid(),
+                user.getName().value(),
+                user.getEmail().value(),
+                System.currentTimeMillis()
+        );
+
+        userEventPublisher.publishUserUpdated(event);
 
         return userMapper.toDto(user);
     }

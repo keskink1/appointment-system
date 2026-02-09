@@ -1,4 +1,4 @@
-package com.keskin.common.security;
+package com.keskin.common.security.filter;
 
 import com.keskin.common.dto.UserPrincipalDto;
 import jakarta.servlet.FilterChain;
@@ -19,6 +19,12 @@ public class GatewayHeaderFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+        if (path.contains("h2-console") || path.contains("v3/api-docs") || path.contains("swagger-ui")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String userId = request.getHeader(HEADER_USER_ID);
         String role = request.getHeader(HEADER_USER_ROLE);

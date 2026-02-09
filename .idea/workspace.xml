@@ -4,15 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="refactor: userappservice (reusable methods, jwt methods)&#10;feat: add rabbitmq to userservice">
-      <change afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/message/UserEventListener.java" afterDir="false" />
+    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="feat : add rabbitmq listener in appointment for data cloning">
+      <change afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/event/UserDeletedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/event/UserUpdatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/config/AbstractSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/RabbitMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/model/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/model/Appointment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/valueobject/UserShadow.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/valueobject/UserShadow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/AppointmentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/AppointmentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/UserShadowEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/UserShadowEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/mapper/AppointmentPersistenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/mapper/AppointmentPersistenceMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/event/UserCreatedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/event/UserCreatedEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/RabbitMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/mapper/UserShadowPersistenceMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/mapper/UserShadowPersistenceMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/message/UserEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/message/UserEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/GatewayHeaderFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/filter/GatewayHeaderFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/users/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/entity/UserEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/message/UserEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/message/UserEventPublisher.java" afterDir="false" />
     </list>
@@ -25,12 +36,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="package-info" />
         <option value="com.intellij.jpb.JpaRepository" />
         <option value="Exception" />
         <option value="Interface" />
         <option value="AnnotationType" />
         <option value="Record" />
+        <option value="package-info" />
         <option value="Class" />
       </list>
     </option>
@@ -202,7 +213,7 @@
       <option name="presentableId" value="Default" />
       <updated>1769974164088</updated>
       <workItem from="1769974165428" duration="45373000" />
-      <workItem from="1770316911948" duration="36545000" />
+      <workItem from="1770316911948" duration="43762000" />
     </task>
     <task id="LOCAL-00001" summary="add appointment domain and common-lib. refactor constructor in user-service">
       <option name="closed" value="true" />
@@ -260,7 +271,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770583733509</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat : add rabbitmq listener in appointment for data cloning">
+      <option name="closed" value="true" />
+      <created>1770585426384</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1770585426384</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -285,7 +304,8 @@
     <MESSAGE value="bugfix gatewayheaderfilter" />
     <MESSAGE value="add swagger, javadoc" />
     <MESSAGE value="refactor: userappservice (reusable methods, jwt methods)&#10;feat: add rabbitmq to userservice" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: userappservice (reusable methods, jwt methods)&#10;feat: add rabbitmq to userservice" />
+    <MESSAGE value="feat : add rabbitmq listener in appointment for data cloning" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat : add rabbitmq listener in appointment for data cloning" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

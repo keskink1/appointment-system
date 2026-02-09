@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AppointmentEntity {
     @Id
-    @Column(name = "userId", updatable = false, nullable = false)
+    @Column(name = "appointment_id", updatable = false, nullable = false)
     private UUID uuid;
 
     @Column(name = "appointment_time")
@@ -33,6 +33,9 @@ public class AppointmentEntity {
 
     @Column(name = "user_email", updatable = false, nullable = false)
     private String userEmail;
+
+    @Column(name = "is_user_active")
+    private boolean userActive;
 
     // -- END USER DATA --
 

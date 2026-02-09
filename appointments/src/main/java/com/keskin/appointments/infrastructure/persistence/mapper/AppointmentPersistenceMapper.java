@@ -16,6 +16,7 @@ public class AppointmentPersistenceMapper {
                 domain.getUser().id(),
                 domain.getUser().name(),
                 domain.getUser().email(),
+                domain.getUser().userActive(),
                 domain.getAppointmentStatus(),
                 domain.getCreatedAt(),
                 domain.getCreatedBy(),
@@ -41,6 +42,7 @@ public class AppointmentPersistenceMapper {
                 entity.getUserId(),
                 entity.getUserName(),
                 entity.getUserEmail(),
+                entity.isUserActive(),
                 entity.getAppointmentStatus()
         );
     }

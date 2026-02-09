@@ -21,10 +21,10 @@ public class Appointment extends BaseEntity {
     private AppointmentStatus appointmentStatus;
 
 
-    public Appointment(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, LocalDateTime timeValue, UUID userId, String userName, String userEmail, AppointmentStatus appointmentStatus) {
+    public Appointment(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, LocalDateTime timeValue, UUID userId, String userName, String userEmail, boolean userActive, AppointmentStatus appointmentStatus) {
         super(uuid, createdAt, createdBy, deleted, deletedAt, deletedBy);
         this.appointmentTime = new AppointmentTime(timeValue);
-        this.user = new UserShadow(userId, userName, userEmail);
+        this.user = new UserShadow(userId, userName, userEmail, userActive);
         this.appointmentStatus = appointmentStatus;
     }
 
@@ -41,6 +41,7 @@ public class Appointment extends BaseEntity {
                 userId,
                 userName,
                 userEmail,
+                true,
                 AppointmentStatus.PENDING
         );
     }

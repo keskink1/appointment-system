@@ -1,6 +1,8 @@
 package com.keskin.users.infrastructure.persistence.message;
 
 import com.keskin.common.dto.event.UserCreatedEvent;
+import com.keskin.common.dto.event.UserDeletedEvent;
+import com.keskin.common.dto.event.UserUpdatedEvent;
 import com.keskin.users.infrastructure.persistence.config.RabbitMQConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,5 +24,19 @@ public class UserEventPublisher {
                 "user.created",
                 event
         );
+    }
+
+    public void publishUserUpdated(UserUpdatedEvent event){
+        log.info("Publishing user updated event for the id of {} ", event.userId());
+
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.USER_EXCHANGE,
+                "user.updated",
+                event
+        );
+    }
+
+    public void publishUserDeleted(UserDeletedEvent event){
+
     }
 }

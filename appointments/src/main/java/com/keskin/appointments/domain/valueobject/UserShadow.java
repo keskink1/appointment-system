@@ -5,7 +5,8 @@ import java.util.UUID;
 public record UserShadow(
         UUID id,
         String name,
-        String email
+        String email,
+        boolean userActive
 ) {
 
 }
