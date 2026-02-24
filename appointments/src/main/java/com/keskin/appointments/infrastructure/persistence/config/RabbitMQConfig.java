@@ -33,6 +33,22 @@ public class RabbitMQConfig {
     }
 
     @Bean
+    public Binding userUpdatedBinding(Queue userQueue, TopicExchange userExchange) {
+        return BindingBuilder
+                .bind(userQueue)
+                .to(userExchange)
+                .with("user.updated"); // Routing Key
+    }
+
+    @Bean
+    public Binding userDeletedBinding(Queue userQueue, TopicExchange userExchange){
+        return BindingBuilder
+                .bind(userQueue)
+                .to(userExchange)
+                .with("user.deleted");
+    }
+
+    @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }

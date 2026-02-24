@@ -24,24 +24,15 @@ public class AppointmentEntity {
     @Column(name = "appointment_time")
     private LocalDateTime appointmentTime;
 
-    // -- USER DATA --
-    @Column(name = "user_id", updatable = false, nullable = false)
-    private UUID userId;
-
-    @Column(name = "user_name", updatable = false, nullable = false)
-    private String userName;
-
-    @Column(name = "user_email", updatable = false, nullable = false)
-    private String userEmail;
-
-    @Column(name = "is_user_active")
-    private boolean userActive;
-
-    // -- END USER DATA --
-
     @Column(name = "appointment_status")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus appointmentStatus;
+
+
+    // -- USER --
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserShadowEntity user;
 
     // -- BASE ENTITY --
     @Column(name = "created_at", nullable = false, updatable = false)

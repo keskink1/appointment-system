@@ -16,7 +16,7 @@ public class Appointment extends BaseEntity {
 
     private AppointmentTime appointmentTime;
 
-    private final UserShadow user;
+    private UserShadow user;
 
     private AppointmentStatus appointmentStatus;
 
@@ -24,16 +24,16 @@ public class Appointment extends BaseEntity {
     public Appointment(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, LocalDateTime timeValue, UUID userId, String userName, String userEmail, boolean userActive, AppointmentStatus appointmentStatus) {
         super(uuid, createdAt, createdBy, deleted, deletedAt, deletedBy);
         this.appointmentTime = new AppointmentTime(timeValue);
-        this.user = new UserShadow(userId, userName, userEmail, userActive);
+        this.user = new UserShadow(userId, userName, userEmail, userActive, LocalDateTime.now());
         this.appointmentStatus = appointmentStatus;
     }
 
 
-    public static Appointment createAppointment(LocalDateTime time, UUID userId, String userName, String userEmail) {
+    public static Appointment createAppointment(LocalDateTime time,String createdBy, UUID userId, String userName, String userEmail) {
         return new Appointment(
                 UUID.randomUUID(),
                 LocalDateTime.now(),
-                "SYSTEM",
+                createdBy,
                 false,
                 null,
                 null,
@@ -45,6 +45,17 @@ public class Appointment extends BaseEntity {
                 AppointmentStatus.PENDING
         );
     }
+
+    public void syncUserShadow(String name, String email, boolean isActive, LocalDateTime syncTime) {
+        this.user = new UserShadow(
+                this.user.getUserId(),
+                name,
+                email,
+                isActive,
+                syncTime
+        );
+    }
+
     public void rescheduleAppointment(LocalDateTime time, String actor){
         if (appointmentStatus.equals(AppointmentStatus.PENDING) || appointmentStatus.equals(AppointmentStatus.APPROVED)) {
             this.appointmentTime = new AppointmentTime(time);
@@ -84,4 +95,5 @@ public class Appointment extends BaseEntity {
             throw new ResourceAlreadyExistsException("Appointment", "time", otherTime.toString());
         }
     }
+
 }

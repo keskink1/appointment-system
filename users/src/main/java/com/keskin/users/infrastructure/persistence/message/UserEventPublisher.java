@@ -37,6 +37,12 @@ public class UserEventPublisher {
     }
 
     public void publishUserDeleted(UserDeletedEvent event){
+        log.info("Publishing user deleted event for the id of {} ", event.userId());
 
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.USER_EXCHANGE,
+                "user.deleted",
+                event
+        );
     }
 }

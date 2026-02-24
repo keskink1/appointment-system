@@ -31,10 +31,10 @@ public class UserShadowEntity {
     @Column(name = "user_id", nullable = false, updatable = false)
     private UUID userId;
 
-    @Column(name = "user_name", nullable = false, updatable = false)
+    @Column(name = "user_name", nullable = false)
     private String userName;
 
-    @Column(name = "user_email", nullable = false, updatable = false)
+    @Column(name = "user_email", nullable = false)
     private String userEmail;
 
     @Column(name = "sync_at")

@@ -1,3 +1,5 @@
 package com.keskin.common.dto;
 
-public record UserPrincipalDto(String userId, String email) {}
+import java.util.UUID;
+
+public record UserPrincipalDto(UUID userId, String email) {}

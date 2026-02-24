@@ -2,22 +2,24 @@ package com.keskin.appointments.infrastructure.persistence.mapper;
 
 import com.keskin.appointments.domain.model.Appointment;
 import com.keskin.appointments.infrastructure.persistence.entity.AppointmentEntity;
+import com.keskin.appointments.infrastructure.persistence.entity.UserShadowEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AppointmentPersistenceMapper {
 
-    public AppointmentEntity toEntity(Appointment domain){
+    private final UserShadowPersistenceMapper userShadowMapper;
+
+    public AppointmentEntity toEntity(Appointment domain) {
         if (domain == null) return null;
 
         return new AppointmentEntity(
                 domain.getUuid(),
                 domain.getAppointmentTime().time(),
-                domain.getUser().id(),
-                domain.getUser().name(),
-                domain.getUser().email(),
-                domain.getUser().userActive(),
                 domain.getAppointmentStatus(),
+                userShadowMapper.toEntity(domain.getUser()),
                 domain.getCreatedAt(),
                 domain.getCreatedBy(),
                 domain.getUpdatedAt(),
@@ -28,8 +30,10 @@ public class AppointmentPersistenceMapper {
         );
     }
 
-    public Appointment toDomain(AppointmentEntity entity){
+    public Appointment toDomain(AppointmentEntity entity) {
         if (entity == null) return null;
+
+        UserShadowEntity userEntity = entity.getUser();
 
         return new Appointment(
                 entity.getUuid(),
@@ -39,10 +43,10 @@ public class AppointmentPersistenceMapper {
                 entity.getDeletedAt(),
                 entity.getDeletedBy(),
                 entity.getAppointmentTime(),
-                entity.getUserId(),
-                entity.getUserName(),
-                entity.getUserEmail(),
-                entity.isUserActive(),
+                userEntity.getUserId(),
+                userEntity.getUserName(),
+                userEntity.getUserEmail(),
+                userEntity.isUserActive(),
                 entity.getAppointmentStatus()
         );
     }

@@ -83,6 +83,10 @@ public class User extends BaseEntity {
         if (isDeleted()){
             throw new IllegalStateException("Deleted user can't be updated");
         }
+        if(!isActive())
+        {
+            throw new IllegalStateException("Inactive user can't be updated");
+        }
         if (newNameValue != null && !newNameValue.isBlank()){
             this.name = new Name(newNameValue);
         }

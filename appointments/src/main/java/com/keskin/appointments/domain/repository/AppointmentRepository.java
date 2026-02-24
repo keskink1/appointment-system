@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface AppointmentRepository {
     Optional<Appointment> findById(UUID id);
 
-    void save(Appointment appointment);
+    Appointment save(Appointment appointment);
 
     //show active appointments of user
     List<Appointment> findByUserIdAndNotCanceled(UUID id);

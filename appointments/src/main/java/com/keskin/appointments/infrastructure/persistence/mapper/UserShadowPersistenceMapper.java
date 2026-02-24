@@ -14,7 +14,8 @@ public class UserShadowPersistenceMapper {
                 entity.getUserId(),
                 entity.getUserName(),
                 entity.getUserEmail(),
-                entity.isUserActive()
+                entity.isUserActive(),
+                entity.getSyncAt()
         );
     }
 
@@ -22,10 +23,11 @@ public class UserShadowPersistenceMapper {
         if (domain == null) return null;
 
         return new UserShadowEntity(
-                domain.id(),
-                domain.name(),
-                domain.email(),
-                domain.userActive()
+                domain.getUserId(),
+                domain.getName(),
+                domain.getEmail(),
+                domain.getSyncAt(),
+                domain.isUserActive()
         );
     }
 }

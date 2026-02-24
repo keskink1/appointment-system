@@ -12,37 +12,43 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import static com.keskin.common.constants.AppConstants.*;
 
 public class GatewayHeaderFilter extends OncePerRequestFilter {
+
+    private boolean isValidHeader(String value) {
+        return value != null && !value.isBlank() && !value.equals("null");
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getRequestURI();
-        if (path.contains("h2-console") || path.contains("v3/api-docs") || path.contains("swagger-ui")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String userId = request.getHeader(HEADER_USER_ID);
+        String userIdStr = request.getHeader(HEADER_USER_ID);
         String role = request.getHeader(HEADER_USER_ROLE);
         String email = request.getHeader(HEADER_USER_MAIL);
 
-        UserPrincipalDto principal = new UserPrincipalDto(userId, email);
+        if (isValidHeader(userIdStr) && isValidHeader(role)) {
+            try {
+                UUID userId = UUID.fromString(userIdStr);
 
-        if (userId != null && !userId.isBlank() && !userId.equals("null") &&
-                role != null && !role.isBlank() && !role.equals("null")) {
+                UserPrincipalDto principal = new UserPrincipalDto(userId, email);
 
-            var auth = new UsernamePasswordAuthenticationToken(
-                    principal,
-                    null,
-                    List.of(new SimpleGrantedAuthority("ROLE_" + role))
-            );
-            SecurityContextHolder.getContext().setAuthentication(auth);
+                var auth = new UsernamePasswordAuthenticationToken(
+                        principal,
+                        null,
+                        List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                );
+                SecurityContextHolder.getContext().setAuthentication(auth);
+
+            } catch (IllegalArgumentException e) {
+                logger.error("Invalid UUID format received from Gateway: " + userIdStr);
+            }
         }
 
         filterChain.doFilter(request, response);
     }
+
 }

@@ -3,6 +3,7 @@ package com.keskin.appointments.infrastructure.persistence.repository.impl;
 import com.keskin.appointments.domain.model.Appointment;
 import com.keskin.appointments.domain.model.AppointmentStatus;
 import com.keskin.appointments.domain.repository.AppointmentRepository;
+import com.keskin.appointments.infrastructure.persistence.entity.AppointmentEntity;
 import com.keskin.appointments.infrastructure.persistence.mapper.AppointmentPersistenceMapper;
 import com.keskin.appointments.infrastructure.persistence.repository.AppointmentJpaRepository;
 import org.springframework.stereotype.Repository;
@@ -29,9 +30,10 @@ public class SqlAppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
-    public void save(Appointment appointment) {
+    public Appointment save(Appointment appointment) {
         var entity = appointmentMapper.toEntity(appointment);
-        appointmentRepository.save(entity);
+        AppointmentEntity createdEntity = appointmentRepository.save(entity);
+        return appointmentMapper.toDomain(createdEntity);
     }
 
     @Override

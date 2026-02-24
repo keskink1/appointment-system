@@ -12,12 +12,30 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * User entity representing the persistent storage of user data in the "app_users" table.
+ * * <p>Performance Optimization - Indexing Strategy:</p>
+ * <ul>
+ * <li><b>idx_user_name:</b> Applied to the 'name' column to speed up search and sorting operations by name.</li>
+ * <li><b>idx_user_email_active:</b> A composite index on 'email' and 'active'. This optimizes queries
+ * that filter users by both their email and account status (e.g., during login or status checks).</li>
+ * <li><b>Note on 'email' index:</b> A separate index for the 'email' column is not manually defined here
+ * because the {@code unique = true} constraint on the field automatically triggers the creation
+ * of a unique index in most relational databases.</li>
+ * </ul>
+ */
 @Entity
-@Table(name = "app_users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        name = "app_users",
+        indexes = {
+                @Index(name = "idx_user_name", columnList = "name"),
+                @Index(name = "idx_user_email_active", columnList = "email, active")
+        }
+)
 public class UserEntity {
 
     @Id

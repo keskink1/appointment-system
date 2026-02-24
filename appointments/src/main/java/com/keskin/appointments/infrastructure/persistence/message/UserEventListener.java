@@ -4,9 +4,8 @@ package com.keskin.appointments.infrastructure.persistence.message;
 import com.keskin.appointments.domain.repository.UserShadowRepository;
 import com.keskin.appointments.domain.valueobject.UserShadow;
 import com.keskin.appointments.infrastructure.persistence.config.RabbitMQConfig;
-import com.keskin.appointments.infrastructure.persistence.entity.UserShadowEntity;
-import com.keskin.appointments.infrastructure.persistence.mapper.UserShadowPersistenceMapper;
 import com.keskin.common.dto.event.UserCreatedEvent;
+import com.keskin.common.dto.event.UserDeletedEvent;
 import com.keskin.common.dto.event.UserUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +23,8 @@ import java.time.ZoneId;
 public class UserEventListener {
 
     private final UserShadowRepository userShadowRepository;
-    private final UserShadowPersistenceMapper userShadowPersistenceMapper;
 
-    private LocalDateTime convertTimestamp(long timestamp){
+    private LocalDateTime convertTimestamp(long timestamp) {
         if (timestamp <= 0) return LocalDateTime.now();
         return Instant.ofEpochMilli(timestamp)
                 .atZone(ZoneId.systemDefault())
@@ -36,42 +34,46 @@ public class UserEventListener {
     @Transactional
     @RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
     public void handleUserCreated(UserCreatedEvent event) {
-            log.info("Received UserCreatedEvent for userId: {} with name: {}", event.userId(), event.name());
+        log.info("Processing UserCreatedEvent for ID: {}", event.userId());
 
-            UserShadowEntity entity = new UserShadowEntity(
-                    event.userId(),
-                    event.name(),
-                    event.email(),
-                    true
-            );
+        UserShadow domain = new UserShadow(
+                event.userId(),
+                event.name(),
+                event.email(),
+                true,
+                convertTimestamp(event.occurredAt())
+        );
 
-            entity.setSyncAt(convertTimestamp(event.occurredAt()));
-
-            UserShadow domain = userShadowPersistenceMapper.toDomain(entity);
-            userShadowRepository.save(domain);
-
-            log.info("Successfully replicated user with the id of {} to shadow table.", event.userId());
+        userShadowRepository.save(domain);
+        log.info("User {} replicated to shadow table at {}", event.userId(), domain.getSyncAt());
     }
 
     @Transactional
     @RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
-    public void handleUserUpdated (UserUpdatedEvent event) {
-        log.info("Received UserUpdatedEvent for userId: {} with name: {}", event.userId(), event.name());
+    public void handleUserUpdated(UserUpdatedEvent event) {
+        log.info("Processing UserUpdatedEvent for ID: {}", event.userId());
 
-        UserShadowEntity entity = new UserShadowEntity(
-                event.userId(),
-                event.name(),
-                event.email(),
-                true
-        );
+        userShadowRepository.findById(event.userId()).ifPresent(user -> {
+            user.updateDetails(
+                    event.name(),
+                    event.email(),
+                    true,
+                    convertTimestamp(event.occurredAt())
+            );
+            userShadowRepository.save(user);
+            log.info("User {} updated in shadow table.", event.userId());
+        });
+    }
 
-        entity.setSyncAt(convertTimestamp(event.occurredAt()));
+    @Transactional
+    @RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
+    public void handleUserDeleted(UserDeletedEvent event) {
+        log.info("Processing UserDeletedEvent for ID: {}", event.userId());
 
-        UserShadow domain = userShadowPersistenceMapper.toDomain(entity);
-        userShadowRepository.save(domain);
-
-        log.info("Successfully updated user with the id of {} to shadow table.", event.userId());
-
+        userShadowRepository.findById(event.userId()).ifPresent(user -> {
+            user.deactivate(convertTimestamp(event.occurredAt()));
+            userShadowRepository.save(user);
+            log.info("User {} deactivated in shadow table.", event.userId());
+        });
     }
 }
-
