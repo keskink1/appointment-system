@@ -8,6 +8,7 @@ import com.keskin.appointments.infrastructure.persistence.mapper.AppointmentPers
 import com.keskin.appointments.infrastructure.persistence.repository.AppointmentJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,5 +43,10 @@ public class SqlAppointmentRepositoryImpl implements AppointmentRepository {
                 .stream()
                 .map(appointmentMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public boolean existsByTimeAndUserId(LocalDateTime time, UUID userId) {
+        return appointmentRepository.findByAppointmentTimeAndUser_UserId(time,userId);
     }
 }

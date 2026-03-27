@@ -31,7 +31,7 @@ public class AppointmentEntity {
 
     // -- USER --
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user", nullable = false)
     private UserShadowEntity user;
 
     // -- BASE ENTITY --

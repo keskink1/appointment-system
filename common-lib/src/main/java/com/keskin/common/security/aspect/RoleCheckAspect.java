@@ -1,7 +1,6 @@
 package com.keskin.common.security.aspect;
 
 import com.keskin.common.enums.Role;
-import com.keskin.common.exception.UnauthorizedException;
 import com.keskin.common.security.annotation.RequiresAdmin;
 import com.keskin.common.util.AuthorizationUtil;
 import jakarta.servlet.http.HttpServletRequest;

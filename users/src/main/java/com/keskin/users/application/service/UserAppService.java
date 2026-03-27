@@ -3,6 +3,7 @@ package com.keskin.users.application.service;
 import com.keskin.common.dto.event.UserDeletedEvent;
 import com.keskin.common.dto.event.UserUpdatedEvent;
 import com.keskin.common.dto.response.PaginatedResponseDto;
+import com.keskin.common.exception.UnauthorizedException;
 import com.keskin.common.util.UserContextHelper;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.common.dto.UserDto;
@@ -12,11 +13,11 @@ import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import com.keskin.users.infrastructure.persistence.message.UserEventPublisher;
+import jakarta.ws.rs.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,6 +33,18 @@ public class UserAppService {
 
     private String getActorAudit(){
         return UserContextHelper.getCurrentUserEmail();
+    }
+
+    private void checkOwnerShip(UUID uuid){
+        String currentUserId = UserContextHelper.getCurrentUserId();
+        if (currentUserId == null){
+            throw new UnauthorizedException("You are not logged in.");
+        }
+
+        UUID actorId = UUID.fromString(currentUserId);
+        if (!uuid.equals(actorId) && !UserContextHelper.isAdmin()) {
+            throw new ForbiddenException("You can only change your own profile.");
+        }
     }
 
     @Transactional(readOnly = true)
@@ -97,6 +110,8 @@ public class UserAppService {
      */
     @Transactional
     public UserDto updateUserById(UUID uuid, UpdateUserRequestDto request) {
+        checkOwnerShip(uuid);
+
         User user = findById(uuid);
 
         if (!user.getEmail().value().equals(request.email())) {
@@ -127,6 +142,7 @@ public class UserAppService {
      */
     @Transactional
     public void deleteUserById(UUID uuid){
+        checkOwnerShip(uuid);
         User user = findById(uuid);
 
         String actorEmail = getActorAudit();

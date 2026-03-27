@@ -29,7 +29,12 @@ public class Appointment extends BaseEntity {
     }
 
 
-    public static Appointment createAppointment(LocalDateTime time,String createdBy, UUID userId, String userName, String userEmail) {
+    public static Appointment createAppointment(LocalDateTime appointmentTime, UUID userId, String userName, String userEmail, String createdBy) {
+
+        if (appointmentTime.isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Appointment time cannot be in the past");
+        }
+
         return new Appointment(
                 UUID.randomUUID(),
                 LocalDateTime.now(),
@@ -37,7 +42,7 @@ public class Appointment extends BaseEntity {
                 false,
                 null,
                 null,
-                time,
+                appointmentTime,
                 userId,
                 userName,
                 userEmail,
@@ -46,21 +51,15 @@ public class Appointment extends BaseEntity {
         );
     }
 
-    public void syncUserShadow(String name, String email, boolean isActive, LocalDateTime syncTime) {
-        this.user = new UserShadow(
-                this.user.getUserId(),
-                name,
-                email,
-                isActive,
-                syncTime
-        );
-    }
-
-    public void rescheduleAppointment(LocalDateTime time, String actor){
+    public void rescheduleAppointment(LocalDateTime appointmentTime, String actor){
         if (appointmentStatus.equals(AppointmentStatus.PENDING) || appointmentStatus.equals(AppointmentStatus.APPROVED)) {
-            this.appointmentTime = new AppointmentTime(time);
+            this.appointmentTime = new AppointmentTime(appointmentTime);
             this.appointmentStatus = AppointmentStatus.PENDING;
             this.updateAudit(actor);
+        }
+
+        if (appointmentTime.isBefore(LocalDateTime.now())){
+            throw new IllegalArgumentException("Appointment time cannot be in the past.");
         }
     }
 

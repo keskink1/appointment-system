@@ -2,6 +2,7 @@ package com.keskin.appointments.domain.repository;
 
 import com.keskin.appointments.domain.model.Appointment;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,4 +15,5 @@ public interface AppointmentRepository {
     //show active appointments of user
     List<Appointment> findByUserIdAndNotCanceled(UUID id);
 
+    boolean existsByTimeAndUserId(LocalDateTime time, UUID userId);
 }

@@ -1,4 +1,4 @@
-package com.keskin.appointments.infrastructure.persistence.config;
+package com.keskin.appointments.infrastructure.message.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -11,6 +11,7 @@ public class RabbitMQConfig {
 
     public static final String USER_EXCHANGE = "user.exchange";
     public static final String USER_QUEUE = "appointment.user.queue";
+
 
 
     @Bean

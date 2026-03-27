@@ -4,21 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="feat : update user test scenarios">
+    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="feat : update event publish for delete scenario">
+      <change afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/dto/UpdateAppointmentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/UserEventRouter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/application/UserAppServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/UserTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/service/AppointmentAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/service/AppointmentAppService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/model/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/model/Appointment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/repository/AppointmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/RabbitMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/config/RabbitMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/AppointmentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/AppointmentEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/message/UserEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/UserEventHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/AppointmentJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/AppointmentJpaRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/impl/SqlAppointmentRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/impl/SqlAppointmentRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/UserPrincipalDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/dto/UserPrincipalDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/filter/GatewayHeaderFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/filter/GatewayHeaderFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/AuthAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/AuthAppService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/aspect/RoleCheckAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/aspect/RoleCheckAspect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/UserContextHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/UserContextHelper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/entity/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/security/UserContextHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/UserContextHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/model/UserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/model/UserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/application/service/UserAppServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/model/UserTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,9 +38,9 @@
         <option value="Exception" />
         <option value="Interface" />
         <option value="AnnotationType" />
-        <option value="Record" />
         <option value="package-info" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -79,39 +84,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.UserTest.executor": "Run",
-    "JUnit.UserTest.shouldThrowExceptionWhenUpdatingDeletedUser.executor": "Run",
-    "JUnit.UserTest.shouldUpdateUserDetails.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.AppointmentsApplication.executor": "Run",
-    "Spring Boot.ConfigserverApplication.executor": "Run",
-    "Spring Boot.EurekaserverApplication.executor": "Run",
-    "Spring Boot.GatewayserverApplication.executor": "Run",
-    "Spring Boot.NotificationsApplication.executor": "Run",
-    "Spring Boot.UsersApplication.executor": "Run",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.UserAppServiceTest.shouldUpdateUserByIdSuccessfully.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest (1).executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldPromoteToAdmin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldReturnUserCreated.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldReturnUserUpdated.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldThrowExceptionWhenUpdatingDeletedUser.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldThrowIllegalStateException_ifDeleteAdmin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsDeleted.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsInactive.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.UserTest.shouldUpdateUserDetails.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.AppointmentsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ConfigserverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaserverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.GatewayserverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.NotificationsApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UsersApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20260224_0000&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.keskin.common.util" />
@@ -128,49 +142,82 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.UserTest.shouldThrowExceptionWhenUpdatingDeletedUser">
-    <configuration name="UserTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.UserAppServiceTest.shouldUpdateUserByIdSuccessfully">
+    <configuration name="UserAppServiceTest.shouldUpdateUserByIdSuccessfully" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="users" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.keskin.common.enums.*" />
+          <option name="PATTERN" value="com.keskin.users.application.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.keskin.users.domain.model" />
-      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.model.UserTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UserTest.shouldThrowExceptionWhenUpdatingDeletedUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="users" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.keskin.users.domain.model.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.keskin.users.domain.model" />
-      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.model.UserTest" />
-      <option name="METHOD_NAME" value="shouldThrowExceptionWhenUpdatingDeletedUser" />
+      <option name="PACKAGE_NAME" value="com.keskin.users.application" />
+      <option name="MAIN_CLASS_NAME" value="com.keskin.users.application.UserAppServiceTest" />
+      <option name="METHOD_NAME" value="shouldUpdateUserByIdSuccessfully" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserTest.shouldUpdateUserDetails" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserTest.shouldPromoteToAdmin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="users" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.keskin.users.domain.model.*" />
+          <option name="PATTERN" value="com.keskin.users.domain.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.keskin.users.domain.model" />
-      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.model.UserTest" />
-      <option name="METHOD_NAME" value="shouldUpdateUserDetails" />
+      <option name="PACKAGE_NAME" value="com.keskin.users.domain" />
+      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.UserTest" />
+      <option name="METHOD_NAME" value="shouldPromoteToAdmin" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserTest.shouldReturnUserUpdated" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="users" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.keskin.users.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.keskin.users.domain" />
+      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.UserTest" />
+      <option name="METHOD_NAME" value="shouldReturnUserUpdated" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserTest.shouldThrowIllegalStateException_ifDeleteAdmin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="users" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.keskin.users.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.keskin.users.domain" />
+      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.UserTest" />
+      <option name="METHOD_NAME" value="shouldThrowIllegalStateException_ifDeleteAdmin" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserTest.shouldThrowIllegalStateException_ifUserIsDeleted" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="users" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.keskin.users.domain.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.keskin.users.domain" />
+      <option name="MAIN_CLASS_NAME" value="com.keskin.users.domain.UserTest" />
+      <option name="METHOD_NAME" value="shouldThrowIllegalStateException_ifUserIsDeleted" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -220,9 +267,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.UserTest.shouldThrowExceptionWhenUpdatingDeletedUser" />
-        <item itemvalue="JUnit.UserTest.shouldUpdateUserDetails" />
-        <item itemvalue="JUnit.UserTest" />
+        <item itemvalue="JUnit.UserAppServiceTest.shouldUpdateUserByIdSuccessfully" />
+        <item itemvalue="JUnit.UserTest.shouldReturnUserUpdated" />
+        <item itemvalue="JUnit.UserTest.shouldThrowIllegalStateException_ifDeleteAdmin" />
+        <item itemvalue="JUnit.UserTest.shouldPromoteToAdmin" />
+        <item itemvalue="JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsDeleted" />
       </list>
     </recent_temporary>
   </component>
@@ -243,7 +292,13 @@
       <option name="presentableId" value="Default" />
       <updated>1769974164088</updated>
       <workItem from="1769974165428" duration="45373000" />
-      <workItem from="1770316911948" duration="65008000" />
+      <workItem from="1770316911948" duration="72045000" />
+      <workItem from="1771941453868" duration="99000" />
+      <workItem from="1771941561097" duration="1405000" />
+      <workItem from="1771942978768" duration="4227000" />
+      <workItem from="1771968883557" duration="9980000" />
+      <workItem from="1772817180289" duration="2553000" />
+      <workItem from="1773419176740" duration="12184000" />
     </task>
     <task id="LOCAL-00001" summary="add appointment domain and common-lib. refactor constructor in user-service">
       <option name="closed" value="true" />
@@ -317,7 +372,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770626185813</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat : update event publish for delete scenario">
+      <option name="closed" value="true" />
+      <created>1771937484576</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1771937484576</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,7 +407,8 @@
     <MESSAGE value="refactor: userappservice (reusable methods, jwt methods)&#10;feat: add rabbitmq to userservice" />
     <MESSAGE value="feat : add rabbitmq listener in appointment for data cloning" />
     <MESSAGE value="feat : add rabbitmq for update user, update listener in appointmentservice&#10;refactor : centralized security config in common lib" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat : add rabbitmq for update user, update listener in appointmentservice&#10;refactor : centralized security config in common lib" />
+    <MESSAGE value="feat : update event publish for delete scenario" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat : update event publish for delete scenario" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

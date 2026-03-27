@@ -3,7 +3,6 @@ package com.keskin.users.domain.repository;
 import com.keskin.common.dto.response.PaginatedResponseDto;
 import com.keskin.users.domain.model.User;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
