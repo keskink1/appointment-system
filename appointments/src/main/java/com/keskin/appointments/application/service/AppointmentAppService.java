@@ -14,11 +14,13 @@ import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.common.exception.ForbiddenException;
 import com.keskin.common.util.UserContextHelper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AppointmentAppService {
@@ -36,7 +38,7 @@ public class AppointmentAppService {
         UUID actorId = UUID.fromString(currentUserId);
 
         if (!appointment.getUser().getUserId().equals(actorId) && !UserContextHelper.isAdmin()) {
-            throw new ForbiddenException ("You don't have permission to access this appointment.");
+            throw new ForbiddenException("You don't have permission to access this appointment.");
         }
     }
 
@@ -53,7 +55,9 @@ public class AppointmentAppService {
     }
 
     @Transactional(readOnly = true)
-    public AppointmentDto getAppointment(UUID appointmentId){
+    public AppointmentDto getAppointment(UUID appointmentId) {
+        log.info("Fetching appointment {} by user {}", appointmentId, UserContextHelper.getCurrentUserId());
+
         Appointment appointment = getAppointmentById(appointmentId);
 
         checkAppointmentOwnership(appointment);
@@ -70,6 +74,7 @@ public class AppointmentAppService {
             throw new AuthenticationException("You are not logged in");
         }
         UUID userId = UUID.fromString(currentUserId);
+        log.info("Creating appointment for user {} at time {}", userId, requestDto.time());
 
         UserShadow userShadow = userShadowRepository.findById(userId).orElseThrow(
                 () -> new ResourceNotFoundException("User shadow", "UUID", userId.toString())
@@ -89,26 +94,30 @@ public class AppointmentAppService {
 
         Appointment createdAppointment = appointmentRepository.save(appointment);
 
+        log.info("Appointment {} created for user {}", createdAppointment.getUuid(), userId);
         return appointmentMapper.toDto(createdAppointment);
     }
 
     @Transactional
     public AppointmentDto updateAppointment(UUID appointmentId, UpdateAppointmentDto requestDto) {
+        log.info("Updating appointment {} by user {}", appointmentId, UserContextHelper.getCurrentUserId());
         Appointment appointment = getAppointmentById(appointmentId);
-
         checkAppointmentOwnership(appointment);
 
         if (!appointment.getAppointmentTime().time().equals(requestDto.time())) {
             UUID actorId = appointment.getUser().getUserId();
 
+            // checking if user has an appointment at that time.
             if (appointmentRepository.existsByTimeAndUserId(requestDto.time(), actorId)) {
                 throw new ResourceAlreadyExistsException("Appointment", "Time", requestDto.time());
             }
 
             String actorEmail = UserContextHelper.getCurrentUserEmail();
             appointment.rescheduleAppointment(requestDto.time(), actorEmail);
-
             appointmentRepository.save(appointment);
+            log.info("Appointment {} rescheduled to {}", appointmentId, requestDto.time());
+        } else {
+            log.info("Appointment {} time unchanged, skipping reschedule", appointmentId);
         }
 
         return appointmentMapper.toDto(appointment);
@@ -116,6 +125,8 @@ public class AppointmentAppService {
 
     @Transactional
     public void deleteAppointment(UUID appointmentId) {
+        log.info("Cancelling appointment {} by user {}", appointmentId, UserContextHelper.getCurrentUserId());
+
         Appointment appointment = getAppointmentById(appointmentId);
 
         checkAppointmentOwnership(appointment);
@@ -123,10 +134,13 @@ public class AppointmentAppService {
         String actorEmail = UserContextHelper.getCurrentUserEmail();
         appointment.cancelAppointment(actorEmail);
         appointmentRepository.save(appointment);
+        log.info("Appointment {} cancelled", appointmentId);
     }
 
     @Transactional
     public AppointmentDto approveAppointment(UUID appointmentId) {
+        log.info("Approving appointment {} by admin {}", appointmentId, UserContextHelper.getCurrentUserEmail());
+
         Appointment appointment = getAppointmentById(appointmentId);
 
         requireAdmin();
@@ -134,12 +148,15 @@ public class AppointmentAppService {
         String actorEmail = UserContextHelper.getCurrentUserEmail();
         appointment.approveAppointment(actorEmail);
         appointmentRepository.save(appointment);
+        log.info("Appointment {} approved", appointmentId);
 
         return appointmentMapper.toDto(appointment);
     }
 
     @Transactional
     public AppointmentDto completeAppointment(UUID appointmentId) {
+        log.info("Completing appointment {} by admin {}", appointmentId, UserContextHelper.getCurrentUserEmail());
+
         Appointment appointment = getAppointmentById(appointmentId);
 
         requireAdmin();
@@ -148,6 +165,7 @@ public class AppointmentAppService {
         appointment.completeAppointment(actorEmail);
 
         appointmentRepository.save(appointment);
+        log.info("Appointment {} completed", appointmentId);
 
         return appointmentMapper.toDto(appointment);
     }

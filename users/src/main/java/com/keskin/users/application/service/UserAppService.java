@@ -15,12 +15,14 @@ import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import com.keskin.users.infrastructure.persistence.message.UserEventPublisher;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserAppService {
@@ -36,15 +38,16 @@ public class UserAppService {
     private void checkOwnership(UUID uuid) {
         String currentUserId = UserContextHelper.getCurrentUserId();
         if (currentUserId == null) {
-            throw new AuthenticationException("You are not logged in."); // 401
+            throw new AuthenticationException("You are not logged in.");
         }
 
         UUID actorId = UUID.fromString(currentUserId);
         if (!uuid.equals(actorId) && !UserContextHelper.isAdmin()) {
-            throw new ForbiddenException("You can only change your own profile."); // 403
+            throw new ForbiddenException("You can only change your own profile.");
         }
     }
 
+    // double guard, in case one of the methods are used somewhere instead of controller
     private void requireAdmin() {
         if (!UserContextHelper.isAdmin()) {
             throw new ForbiddenException("Only admins can perform this action.");
@@ -53,18 +56,23 @@ public class UserAppService {
 
     @Transactional(readOnly = true)
     public UserDto getUserDtoById(UUID uuid) {
+        log.info("Fetching user {} by actor {}", uuid, UserContextHelper.getCurrentUserId());
         checkOwnership(uuid);
         return userMapper.toDto(findById(uuid));
     }
 
     @Transactional(readOnly = true)
     public UserDto getUserDtoByEmail(String email) {
+        log.info("Fetching user by email {} by admin {}", email, UserContextHelper.getCurrentUserEmail());
         requireAdmin();
         return userMapper.toDto(findByEmail(email));
     }
 
     @Transactional(readOnly = true)
     public PaginatedResponseDto<UserDto> findAll(int page, int size) {
+        log.info("Fetching all users, page={}, size={} by admin {}", page, size, UserContextHelper.getCurrentUserEmail());
+
+        requireAdmin();
         var userPage = userRepository.findAllUsers(page, size);
 
         List<UserDto> dtos = userPage.data().stream()
@@ -88,6 +96,7 @@ public class UserAppService {
 
     @Transactional
     public UserDto updateUserById(UUID uuid, UpdateUserRequestDto request) {
+        log.info("Updating user {} by actor {}", uuid, UserContextHelper.getCurrentUserId());
         checkOwnership(uuid);
 
         User user = findById(uuid);
@@ -100,6 +109,7 @@ public class UserAppService {
 
         user.updateUser(request.name(), request.age(), request.email(), getActorAudit());
         userRepository.saveUser(user);
+        log.info("User {} updated successfully", uuid);
 
         // fix me: if database commit fails message still will be in rabbitmq
         userEventPublisher.publishUserUpdated(new UserUpdatedEvent(
@@ -108,56 +118,68 @@ public class UserAppService {
                 user.getEmail().value(),
                 System.currentTimeMillis()
         ));
+        log.info("UserUpdatedEvent published for user {}", uuid);
 
         return userMapper.toDto(user);
     }
 
     @Transactional
     public void deleteUserById(UUID uuid) {
+        log.info("Deleting user {} by actor {}", uuid, UserContextHelper.getCurrentUserId());
         checkOwnership(uuid);
         User user = findById(uuid);
         user.deleteUser(getActorAudit());
         userRepository.saveUser(user);
+        log.info("User {} soft-deleted successfully", uuid);
 
         userEventPublisher.publishUserDeleted(new UserDeletedEvent(
                 user.getUuid(),
                 System.currentTimeMillis()
         ));
+        log.info("UserDeletedEvent published for user {}", uuid);
     }
 
     @Transactional
     public UserDto promoteToAdmin(UUID uuid) {
+        log.info("Promoting user {} to admin by {}", uuid, UserContextHelper.getCurrentUserEmail());
         requireAdmin();
         User user = findById(uuid);
         user.promoteToAdmin(getActorAudit());
         userRepository.saveUser(user);
+        log.info("User {} promoted to admin", uuid);
         return userMapper.toDto(user);
     }
 
     @Transactional
     public UserDto changeRoleToEmployee(UUID uuid) {
+        log.info("Changing user {} role to employee by {}", uuid, UserContextHelper.getCurrentUserEmail());
         requireAdmin();
         User user = findById(uuid);
         user.changeRoleToEmployee(getActorAudit());
         userRepository.saveUser(user);
+        log.info("User {} role changed to employee", uuid);
         return userMapper.toDto(user);
     }
 
     @Transactional
     public UserDto activateUser(UUID uuid) {
+        log.info("Activating user {} by admin {}", uuid, UserContextHelper.getCurrentUserEmail());
         requireAdmin();
         User user = findById(uuid);
         user.activate(getActorAudit());
         userRepository.saveUser(user);
+        log.info("User {} activated", uuid);
         return userMapper.toDto(user);
     }
 
     @Transactional
     public UserDto deactivateUser(UUID uuid) {
+        log.info("Deactivating user {} by admin {}", uuid, UserContextHelper.getCurrentUserEmail());
         requireAdmin();
         User user = findById(uuid);
         user.deactivate(getActorAudit());
         userRepository.saveUser(user);
+        log.info("User {} deactivated", uuid);
         return userMapper.toDto(user);
     }
 }

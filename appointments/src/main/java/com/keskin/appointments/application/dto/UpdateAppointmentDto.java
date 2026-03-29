@@ -1,8 +1,11 @@
 package com.keskin.appointments.application.dto;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 public record UpdateAppointmentDto(
-        LocalDateTime time
+        @Future @NotNull LocalDateTime time
 ) {
 }
