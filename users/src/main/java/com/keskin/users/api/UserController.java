@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 import static com.keskin.common.constants.AppConstants.*;
@@ -37,28 +36,14 @@ public class UserController {
     private final UserAppService userAppService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getById(
-            @PathVariable UUID id,
-            @RequestHeader(HEADER_USER_ID) String currentUserIdHeader,
-            @RequestHeader(HEADER_USER_ROLE) String roleHeader) {
-
-        Role role = AuthorizationUtil.parseRole(roleHeader);
-        AuthorizationUtil.checkUserAccess(id, UUID.fromString(currentUserIdHeader), role);
-
+    public ResponseEntity<UserDto> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(userAppService.getUserDtoById(id));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> updateById(
             @PathVariable UUID id,
-            @RequestBody UpdateUserRequestDto request,
-            @RequestHeader(HEADER_USER_ID) String currentUserIdHeader,
-            @RequestHeader(HEADER_USER_ROLE) String roleHeader) {
-
-        Role role = AuthorizationUtil.parseRole(roleHeader);
-        AuthorizationUtil.checkUserAccess(id, UUID.fromString(currentUserIdHeader), role);
-
+            @RequestBody UpdateUserRequestDto request) {
         return ResponseEntity.ok(userAppService.updateUserById(id, request));
     }
 

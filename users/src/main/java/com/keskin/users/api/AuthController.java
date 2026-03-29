@@ -4,6 +4,7 @@ import com.keskin.common.dto.request.CreateUserRequestDto;
 import com.keskin.common.dto.request.LoginRequestDto;
 import com.keskin.common.dto.response.AuthResponseDto;
 import com.keskin.users.application.service.AuthAppService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ public class AuthController {
     private final AuthAppService authAppService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDto> register(@RequestBody CreateUserRequestDto request) {
+    public ResponseEntity<AuthResponseDto> register(
+            @Valid @RequestBody CreateUserRequestDto request) {
         AuthResponseDto response = authAppService.registerUser(request);
 
         URI location = ServletUriComponentsBuilder
@@ -32,7 +34,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto request){
+    public ResponseEntity<AuthResponseDto> login(
+            @Valid @RequestBody LoginRequestDto request){
         AuthResponseDto response = authAppService.loginUser(request);
 
         return ResponseEntity.ok(response);

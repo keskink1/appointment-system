@@ -8,12 +8,13 @@ import com.keskin.appointments.domain.model.Appointment;
 import com.keskin.appointments.domain.repository.AppointmentRepository;
 import com.keskin.appointments.domain.repository.UserShadowRepository;
 import com.keskin.appointments.domain.valueobject.UserShadow;
+import com.keskin.common.exception.AuthenticationException;
 import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.common.exception.ResourceNotFoundException;
-import com.keskin.common.exception.UnauthorizedException;
+import com.keskin.common.exception.ForbiddenException;
 import com.keskin.common.util.UserContextHelper;
-import jakarta.ws.rs.ForbiddenException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,21 +31,44 @@ public class AppointmentAppService {
     private void checkAppointmentOwnership(Appointment appointment) {
         String currentUserId = UserContextHelper.getCurrentUserId();
         if (currentUserId == null) {
-            throw new UnauthorizedException("You are not logged in.");
+            throw new AuthenticationException("You are not logged in.");
         }
 
         UUID actorId = UUID.fromString(currentUserId);
 
         if (!appointment.getUser().getUserId().equals(actorId) && !UserContextHelper.isAdmin()) {
-            throw new ForbiddenException("You don't have permission to access this appointment.");
+            throw new ForbiddenException ("You don't have permission to access this appointment.");
         }
+    }
+
+    // Secondary guard, in case this method is called outside the controller context
+    private void requireAdmin() {
+        if (!UserContextHelper.isAdmin()) {
+            throw new ForbiddenException("Only admins can perform this action.");
+        }
+    }
+
+    private Appointment getAppointmentById(UUID appointmentId) {
+        return appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Appointment", "ID", appointmentId));
+    }
+
+    @Transactional(readOnly = true)
+    public AppointmentDto getAppointment(UUID appointmentId){
+        Appointment appointment = getAppointmentById(appointmentId);
+
+        checkAppointmentOwnership(appointment);
+
+        return appointmentMapper.toDto(appointment);
     }
 
     @Transactional
     public AppointmentDto createAppointment(CreateAppointmentRequestDto requestDto) {
+        String currentUserMail = UserContextHelper.getCurrentUserEmail();
         String currentUserId = UserContextHelper.getCurrentUserId();
+
         if (currentUserId == null) {
-            throw new UnauthorizedException("You are not logged in");
+            throw new AuthenticationException("You are not logged in");
         }
         UUID userId = UUID.fromString(currentUserId);
 
@@ -61,18 +85,17 @@ public class AppointmentAppService {
                 userShadow.getUserId(),
                 userShadow.getName(),
                 userShadow.getEmail(),
-                userShadow.getEmail()
+                currentUserMail
         );
 
-        Appointment createdAppointment  = appointmentRepository.save(appointment);
+        Appointment createdAppointment = appointmentRepository.save(appointment);
 
         return appointmentMapper.toDto(createdAppointment);
     }
 
     @Transactional
     public AppointmentDto updateAppointment(UUID appointmentId, UpdateAppointmentDto requestDto) {
-        Appointment appointment = appointmentRepository.findById(appointmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Appointment", "ID", appointmentId));
+        Appointment appointment = getAppointmentById(appointmentId);
 
         checkAppointmentOwnership(appointment);
 
@@ -93,7 +116,40 @@ public class AppointmentAppService {
     }
 
     @Transactional
-    public void deleteAppointment(UUID appointmentId){
+    public void deleteAppointment(UUID appointmentId) {
+        Appointment appointment = getAppointmentById(appointmentId);
 
+        checkAppointmentOwnership(appointment);
+
+        String actorEmail = UserContextHelper.getCurrentUserEmail();
+        appointment.cancelAppointment(actorEmail);
+        appointmentRepository.save(appointment);
+    }
+
+    @Transactional
+    public AppointmentDto approveAppointment(UUID appointmentId) {
+        Appointment appointment = getAppointmentById(appointmentId);
+
+        requireAdmin();
+
+        String actorEmail = UserContextHelper.getCurrentUserEmail();
+        appointment.approveAppointment(actorEmail);
+        appointmentRepository.save(appointment);
+
+        return appointmentMapper.toDto(appointment);
+    }
+
+    @Transactional
+    public AppointmentDto completeAppointment(UUID appointmentId) {
+        Appointment appointment = getAppointmentById(appointmentId);
+
+        requireAdmin();
+
+        String actorEmail = UserContextHelper.getCurrentUserEmail();
+        appointment.completeAppointment(actorEmail);
+
+        appointmentRepository.save(appointment);
+
+        return appointmentMapper.toDto(appointment);
     }
 }

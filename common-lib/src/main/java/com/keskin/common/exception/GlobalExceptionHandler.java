@@ -68,8 +68,8 @@ public class GlobalExceptionHandler {
      * Handles authorization failures when a user lacks the necessary roles or permissions.
      * @return 403 Forbidden
      */
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponseDto> handleForbidden(UnauthorizedException ex) {
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponseDto> handleForbidden(ForbiddenException ex) {
         return buildErrorResponse(HttpStatus.FORBIDDEN , "You are not authorized! " + ex.getMessage());
     }
 

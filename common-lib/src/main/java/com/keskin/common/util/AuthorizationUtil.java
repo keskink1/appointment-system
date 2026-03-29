@@ -1,7 +1,7 @@
 package com.keskin.common.util;
 
 import com.keskin.common.enums.Role;
-import com.keskin.common.exception.UnauthorizedException;
+import com.keskin.common.exception.ForbiddenException;
 import java.util.UUID;
 
 public final class AuthorizationUtil {
@@ -19,7 +19,7 @@ public final class AuthorizationUtil {
         }
 
         if (!targetUserId.equals(currentUserId)) {
-            throw new UnauthorizedException("No authorization");
+            throw new ForbiddenException("No authorization");
         }
     }
 
@@ -29,7 +29,7 @@ public final class AuthorizationUtil {
      */
     public static void checkAdmin(Role currentUserRole) {
         if (currentUserRole != Role.ADMIN) {
-            throw new UnauthorizedException("Only admin can perform this action!");
+            throw new ForbiddenException("Only admin can perform this action!");
         }
     }
 
@@ -39,7 +39,7 @@ public final class AuthorizationUtil {
      */
     public static Role parseRole(String roleHeader) {
         if (roleHeader == null || roleHeader.isBlank()) {
-            throw new UnauthorizedException("");
+            throw new ForbiddenException("Role header is blank or null");
         }
 
         try {
@@ -48,7 +48,7 @@ public final class AuthorizationUtil {
                     : roleHeader;
             return Role.valueOf(roleName.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new UnauthorizedException(" Invalid security role: " + roleHeader);
+            throw new ForbiddenException(" Invalid security role: " + roleHeader);
         }
     }
 }

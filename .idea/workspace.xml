@@ -4,26 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="feat : update event publish for delete scenario">
-      <change afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/dto/UpdateAppointmentDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/UserEventRouter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/application/UserAppServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/UserTest.java" afterDir="false" />
+    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="refactor userappservice for better security. &#10;feat : add update appointment for appointment service">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/api/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/api/AppointmentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/service/AppointmentAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/service/AppointmentAppService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/model/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/model/Appointment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/domain/repository/AppointmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/config/RabbitMQConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/AppointmentEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/entity/AppointmentEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/message/UserEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/UserEventHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/AppointmentJpaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/AppointmentJpaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/impl/SqlAppointmentRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/persistence/repository/impl/SqlAppointmentRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/aspect/RoleCheckAspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/security/aspect/RoleCheckAspect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/UserContextHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/src/main/java/com/keskin/common/util/UserContextHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/api/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/application/service/UserAppService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/domain/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/application/service/UserAppServiceTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/src/test/java/com/keskin/users/domain/model/UserTest.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,7 +286,7 @@
       <workItem from="1771942978768" duration="4227000" />
       <workItem from="1771968883557" duration="9980000" />
       <workItem from="1772817180289" duration="2553000" />
-      <workItem from="1773419176740" duration="12184000" />
+      <workItem from="1773419176740" duration="20130000" />
     </task>
     <task id="LOCAL-00001" summary="add appointment domain and common-lib. refactor constructor in user-service">
       <option name="closed" value="true" />
@@ -380,7 +368,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771937484576</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="refactor userappservice for better security. &#10;feat : add update appointment for appointment service">
+      <option name="closed" value="true" />
+      <created>1774608005729</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774608005729</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,7 +404,8 @@
     <MESSAGE value="feat : add rabbitmq listener in appointment for data cloning" />
     <MESSAGE value="feat : add rabbitmq for update user, update listener in appointmentservice&#10;refactor : centralized security config in common lib" />
     <MESSAGE value="feat : update event publish for delete scenario" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat : update event publish for delete scenario" />
+    <MESSAGE value="refactor userappservice for better security. &#10;feat : add update appointment for appointment service" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor userappservice for better security. &#10;feat : add update appointment for appointment service" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

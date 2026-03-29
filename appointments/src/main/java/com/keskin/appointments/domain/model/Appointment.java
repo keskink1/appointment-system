@@ -88,11 +88,4 @@ public class Appointment extends BaseEntity {
         }
     }
 
-    public void checkConflict(LocalDateTime otherTime) {
-        if (this.appointmentStatus != AppointmentStatus.CANCELED &&
-                this.appointmentTime.time().equals(otherTime)) {
-            throw new ResourceAlreadyExistsException("Appointment", "time", otherTime.toString());
-        }
-    }
-
 }

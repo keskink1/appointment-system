@@ -3,7 +3,7 @@ package com.keskin.users.application.service;
 import com.keskin.common.dto.event.UserDeletedEvent;
 import com.keskin.common.dto.event.UserUpdatedEvent;
 import com.keskin.common.dto.response.PaginatedResponseDto;
-import com.keskin.common.exception.UnauthorizedException;
+import com.keskin.common.exception.ForbiddenException;
 import com.keskin.common.util.UserContextHelper;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
 import com.keskin.common.dto.UserDto;
@@ -13,7 +13,6 @@ import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.users.domain.model.User;
 import com.keskin.users.domain.repository.UserRepository;
 import com.keskin.users.infrastructure.persistence.message.UserEventPublisher;
-import jakarta.ws.rs.ForbiddenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,17 +37,18 @@ public class UserAppService {
     private void checkOwnerShip(UUID uuid){
         String currentUserId = UserContextHelper.getCurrentUserId();
         if (currentUserId == null){
-            throw new UnauthorizedException("You are not logged in.");
+            throw new ForbiddenException("You are not logged in.");
         }
 
         UUID actorId = UUID.fromString(currentUserId);
         if (!uuid.equals(actorId) && !UserContextHelper.isAdmin()) {
-            throw new ForbiddenException("You can only change your own profile.");
+            throw new jakarta.ws.rs.ForbiddenException("You can only change your own profile.");
         }
     }
 
     @Transactional(readOnly = true)
     public UserDto getUserDtoById(UUID uuid) {
+        checkOwnerShip(uuid);
         User user = findById(uuid);
         return userMapper.toDto(user);
     }
