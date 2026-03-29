@@ -14,7 +14,6 @@ import com.keskin.common.exception.ResourceNotFoundException;
 import com.keskin.common.exception.ForbiddenException;
 import com.keskin.common.util.UserContextHelper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -3,6 +3,7 @@ package com.keskin.users.application.service;
 import com.keskin.common.dto.event.UserDeletedEvent;
 import com.keskin.common.dto.event.UserUpdatedEvent;
 import com.keskin.common.dto.response.PaginatedResponseDto;
+import com.keskin.common.exception.AuthenticationException;
 import com.keskin.common.exception.ForbiddenException;
 import com.keskin.common.util.UserContextHelper;
 import com.keskin.users.application.dto.UpdateUserRequestDto;
@@ -20,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.UUID;
 
-
 @Service
 @RequiredArgsConstructor
 public class UserAppService {
@@ -29,56 +29,51 @@ public class UserAppService {
     private final UserMapper userMapper;
     private final UserEventPublisher userEventPublisher;
 
-
-    private String getActorAudit(){
+    private String getActorAudit() {
         return UserContextHelper.getCurrentUserEmail();
     }
 
-    private void checkOwnerShip(UUID uuid){
+    private void checkOwnership(UUID uuid) {
         String currentUserId = UserContextHelper.getCurrentUserId();
-        if (currentUserId == null){
-            throw new ForbiddenException("You are not logged in.");
+        if (currentUserId == null) {
+            throw new AuthenticationException("You are not logged in."); // 401
         }
 
         UUID actorId = UUID.fromString(currentUserId);
         if (!uuid.equals(actorId) && !UserContextHelper.isAdmin()) {
-            throw new jakarta.ws.rs.ForbiddenException("You can only change your own profile.");
+            throw new ForbiddenException("You can only change your own profile."); // 403
+        }
+    }
+
+    private void requireAdmin() {
+        if (!UserContextHelper.isAdmin()) {
+            throw new ForbiddenException("Only admins can perform this action.");
         }
     }
 
     @Transactional(readOnly = true)
     public UserDto getUserDtoById(UUID uuid) {
-        checkOwnerShip(uuid);
-        User user = findById(uuid);
-        return userMapper.toDto(user);
+        checkOwnership(uuid);
+        return userMapper.toDto(findById(uuid));
     }
 
     @Transactional(readOnly = true)
     public UserDto getUserDtoByEmail(String email) {
-        User user = findByEmail(email);
-        return userMapper.toDto(user);
+        requireAdmin();
+        return userMapper.toDto(findByEmail(email));
     }
 
     @Transactional(readOnly = true)
     public PaginatedResponseDto<UserDto> findAll(int page, int size) {
-
         var userPage = userRepository.findAllUsers(page, size);
 
         List<UserDto> dtos = userPage.data().stream()
                 .map(userMapper::toDto)
                 .toList();
 
-        return new PaginatedResponseDto<>(
-                dtos,
-                userPage.totalElements(),
-                userPage.totalPages(),
-                userPage.currentPage()
-        );
+        return new PaginatedResponseDto<>(dtos, userPage.totalElements(), userPage.totalPages(), userPage.currentPage());
     }
 
-    /**
-     * @throws ResourceNotFoundException if user is not found.
-     */
     @Transactional(readOnly = true)
     public User findById(UUID uuid) {
         return userRepository.findById(uuid).orElseThrow(() ->
@@ -91,26 +86,9 @@ public class UserAppService {
                 new ResourceNotFoundException("User", "Email", email));
     }
 
-
-    /**
-     * Updates an existing user's details and triggers data synchronization across the system.
-     * <p>
-     * This method ensures high consistency by:
-     * 1. Performing an email uniqueness check only if the email address is being modified.
-     * 2. Updating the User domain entity using the provided request data and audit information.
-     * 3. Publishing a {@link UserUpdatedEvent} via RabbitMQ to synchronize the changes
-     * with shadow tables in other microservices (e.g., Appointment Service).
-     * </p>
-     *
-     * @param uuid The unique identifier of the user to be updated.
-     * @param request The DTO containing the updated user information (name, age, email).
-     * @return {@link UserDto} representing the updated state of the user.
-     * @throws ResourceAlreadyExistsException if the new email is already registered by another user.
-     * @throws ResourceNotFoundException if no user exists with the given UUID.
-     */
     @Transactional
     public UserDto updateUserById(UUID uuid, UpdateUserRequestDto request) {
-        checkOwnerShip(uuid);
+        checkOwnership(uuid);
 
         User user = findById(uuid);
 
@@ -120,75 +98,65 @@ public class UserAppService {
             }
         }
 
-        String actorEmail = getActorAudit();
-        user.updateUser(request.name(), request.age(), request.email(), actorEmail);
-
+        user.updateUser(request.name(), request.age(), request.email(), getActorAudit());
         userRepository.saveUser(user);
-    // fix me. if database commit fails message still will be in rabbitmq
-        UserUpdatedEvent event = new UserUpdatedEvent(
+
+        // fix me: if database commit fails message still will be in rabbitmq
+        userEventPublisher.publishUserUpdated(new UserUpdatedEvent(
                 user.getUuid(),
                 user.getName().value(),
                 user.getEmail().value(),
                 System.currentTimeMillis()
-        );
-        userEventPublisher.publishUserUpdated(event);
-
+        ));
 
         return userMapper.toDto(user);
     }
 
-    /**
-     * Performs a soft delete by marking the user as deleted.
-     */
     @Transactional
-    public void deleteUserById(UUID uuid){
-        checkOwnerShip(uuid);
+    public void deleteUserById(UUID uuid) {
+        checkOwnership(uuid);
         User user = findById(uuid);
-
-        String actorEmail = getActorAudit();
-        user.deleteUser(actorEmail);
+        user.deleteUser(getActorAudit());
         userRepository.saveUser(user);
 
-        UserDeletedEvent event =  new UserDeletedEvent(
+        userEventPublisher.publishUserDeleted(new UserDeletedEvent(
                 user.getUuid(),
                 System.currentTimeMillis()
-        );
-
-        userEventPublisher.publishUserDeleted(event);
+        ));
     }
 
     @Transactional
-    public UserDto promoteToAdmin(UUID uuid){
+    public UserDto promoteToAdmin(UUID uuid) {
+        requireAdmin();
         User user = findById(uuid);
-        String actorEmail = getActorAudit();
-        user.promoteToAdmin(actorEmail);
+        user.promoteToAdmin(getActorAudit());
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
 
     @Transactional
-    public UserDto changeRoleToEmployee(UUID uuid){
+    public UserDto changeRoleToEmployee(UUID uuid) {
+        requireAdmin();
         User user = findById(uuid);
-        String actorEmail = getActorAudit();
-        user.changeRoleToEmployee(actorEmail);
+        user.changeRoleToEmployee(getActorAudit());
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
 
     @Transactional
-    public UserDto activateUser(UUID uuid){
+    public UserDto activateUser(UUID uuid) {
+        requireAdmin();
         User user = findById(uuid);
-        String actorEmail = getActorAudit();
-        user.activate(actorEmail);
+        user.activate(getActorAudit());
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
 
     @Transactional
-    public UserDto deactivateUser(UUID uuid){
+    public UserDto deactivateUser(UUID uuid) {
+        requireAdmin();
         User user = findById(uuid);
-        String actorEmail = getActorAudit();
-        user.deactivate(actorEmail);
+        user.deactivate(getActorAudit());
         userRepository.saveUser(user);
         return userMapper.toDto(user);
     }
