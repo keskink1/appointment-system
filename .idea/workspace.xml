@@ -4,10 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="refactor userappservice">
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/dto/CreateAppointmentRequestDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/dto/CreateAppointmentRequestDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/dto/UpdateAppointmentDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/dto/UpdateAppointmentDto.java" afterDir="false" />
+    <list default="true" id="7fd15fb7-172b-450c-99b3-fdf4ed899e59" name="Changes" comment="add log to services">
+      <change afterPath="$PROJECT_DIR$/appointments/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configserver/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose/dev/common-config.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose/dev/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eurekaserver/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gatewayserver/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/api/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/api/AppointmentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/service/AppointmentAppService.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/application/service/AppointmentAppService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/UserEventRouter.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/UserEventRouter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/java/com/keskin/appointments/infrastructure/message/config/AppointmentRabbitMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/appointments/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/appointments/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/classes/com/keskin/common/exception/GlobalExceptionHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/common-lib/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configserver/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configserver/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eurekaserver/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/eurekaserver/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gatewayserver/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gatewayserver/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/users/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/config/UserRabbitMQConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/message/UserEventPublisher.java" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/java/com/keskin/users/infrastructure/persistence/message/UserEventPublisher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/users/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +46,7 @@
         <option value="package-info" />
         <option value="Class" />
         <option value="Record" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -68,49 +90,61 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.UserAppServiceTest.shouldUpdateUserByIdSuccessfully.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest (1).executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldPromoteToAdmin.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldReturnUserCreated.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldReturnUserUpdated.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldThrowExceptionWhenUpdatingDeletedUser.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldThrowIllegalStateException_ifDeleteAdmin.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsDeleted.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsInactive.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.shouldUpdateUserDetails.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.AppointmentsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.ConfigserverApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.EurekaserverApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.GatewayserverApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.NotificationsApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.UsersApplication.executor&quot;: &quot;Run&quot;,
-    &quot;com.google.cloudcode.ide_session_index&quot;: &quot;20260224_0000&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.UserAppServiceTest.shouldUpdateUserByIdSuccessfully.executor": "Run",
+    "JUnit.UserTest (1).executor": "Run",
+    "JUnit.UserTest.executor": "Run",
+    "JUnit.UserTest.shouldPromoteToAdmin.executor": "Run",
+    "JUnit.UserTest.shouldReturnUserCreated.executor": "Run",
+    "JUnit.UserTest.shouldReturnUserUpdated.executor": "Run",
+    "JUnit.UserTest.shouldThrowExceptionWhenUpdatingDeletedUser.executor": "Run",
+    "JUnit.UserTest.shouldThrowIllegalStateException_ifDeleteAdmin.executor": "Run",
+    "JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsDeleted.executor": "Run",
+    "JUnit.UserTest.shouldThrowIllegalStateException_ifUserIsInactive.executor": "Run",
+    "JUnit.UserTest.shouldUpdateUserDetails.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.AppointmentsApplication.executor": "Run",
+    "Spring Boot.ConfigserverApplication.executor": "Run",
+    "Spring Boot.EurekaserverApplication.executor": "Run",
+    "Spring Boot.GatewayserverApplication.executor": "Run",
+    "Spring Boot.NotificationsApplication.executor": "Run",
+    "Spring Boot.UsersApplication.executor": "Run",
+    "com.google.cloudcode.ide_session_index": "20260224_0000",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/kaankeskin/IdeaProjects/2026/appointment-system/docker-compose/dev",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docker-compose/dev" />
+      <recent name="$PROJECT_DIR$/users" />
+      <recent name="$PROJECT_DIR$/gatewayserver" />
+      <recent name="$PROJECT_DIR$/eurekaserver" />
+      <recent name="$PROJECT_DIR$/configserver" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docker-compose/dev" />
+      <recent name="$PROJECT_DIR$/docker-compose" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.keskin.common.util" />
       <recent name="com.keskin.users.infrastructure.security" />
@@ -282,7 +316,7 @@
       <workItem from="1771942978768" duration="4227000" />
       <workItem from="1771968883557" duration="9980000" />
       <workItem from="1772817180289" duration="2553000" />
-      <workItem from="1773419176740" duration="21189000" />
+      <workItem from="1773419176740" duration="27490000" />
     </task>
     <task id="LOCAL-00001" summary="add appointment domain and common-lib. refactor constructor in user-service">
       <option name="closed" value="true" />
@@ -388,7 +422,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774825449589</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="add log to services">
+      <option name="closed" value="true" />
+      <created>1774825988743</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1774825988743</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -419,7 +461,8 @@
     <MESSAGE value="refactor userappservice for better security. &#10;feat : add update appointment for appointment service" />
     <MESSAGE value="refactor user controller.&#10;feat : add appointment controller. add features to appointmentappservice" />
     <MESSAGE value="refactor userappservice" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor userappservice" />
+    <MESSAGE value="add log to services" />
+    <option name="LAST_COMMIT_MESSAGE" value="add log to services" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

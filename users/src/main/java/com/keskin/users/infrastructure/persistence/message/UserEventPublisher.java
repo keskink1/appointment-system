@@ -3,7 +3,7 @@ package com.keskin.users.infrastructure.persistence.message;
 import com.keskin.common.dto.event.UserCreatedEvent;
 import com.keskin.common.dto.event.UserDeletedEvent;
 import com.keskin.common.dto.event.UserUpdatedEvent;
-import com.keskin.users.infrastructure.persistence.config.RabbitMQConfig;
+import com.keskin.users.infrastructure.persistence.config.UserRabbitMQConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -20,7 +20,7 @@ public class UserEventPublisher {
         log.info("Publishing user created event for the id of {} ", event.userId());
 
         rabbitTemplate.convertAndSend(
-                RabbitMQConfig.USER_EXCHANGE,
+                UserRabbitMQConfig.USER_EXCHANGE,
                 "user.created",
                 event
         );
@@ -30,7 +30,7 @@ public class UserEventPublisher {
         log.info("Publishing user updated event for the id of {} ", event.userId());
 
         rabbitTemplate.convertAndSend(
-                RabbitMQConfig.USER_EXCHANGE,
+                UserRabbitMQConfig.USER_EXCHANGE,
                 "user.updated",
                 event
         );
@@ -40,7 +40,7 @@ public class UserEventPublisher {
         log.info("Publishing user deleted event for the id of {} ", event.userId());
 
         rabbitTemplate.convertAndSend(
-                RabbitMQConfig.USER_EXCHANGE,
+                UserRabbitMQConfig.USER_EXCHANGE,
                 "user.deleted",
                 event
         );

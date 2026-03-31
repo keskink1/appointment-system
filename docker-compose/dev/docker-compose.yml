@@ -1,0 +1,172 @@
+services:
+  # --- INFRASTRUCTURE ---
+  configserver:
+    build: ../../configserver
+    image: appointmentsystem/configserver:v1
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=git
+      - SPRING_CLOUD_CONFIG_SERVER_GIT_URI=https://github.com/keskink1/appointment-config.git
+    healthcheck:
+      test: "curl --fail --silent localhost:8888/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  eurekaserver:
+    build: ../../eurekaserver
+    image: appointmentsystem/eureka-server:v1
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    healthcheck:
+      test: "curl --fail --silent localhost:8761/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base
+
+  # --- DATABASES ---
+  userdb:
+    image: postgres:15
+    container_name: userdb
+    extends:
+      file: common-config.yml
+      service: base-postgres-config
+    ports:
+      - "${USER_DB_PORT}:5432"
+    environment:
+      - POSTGRES_DB=userdb
+      - POSTGRES_PASSWORD=${USER_DB_PASSWORD}
+
+  appointmentdb:
+    image: postgres:15
+    container_name: appointmentdb
+    extends:
+      file: common-config.yml
+      service: base-postgres-config
+    ports:
+      - "${APPOINTMENT_DB_PORT}:5432"
+    environment:
+      - POSTGRES_DB=appointmentdb
+      - POSTGRES_PASSWORD=${APPOINTMENT_DB_PASSWORD}
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "check_running" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  # --- MICROSERVICES ---
+  userservice:
+    build: ../../users
+    image: appointmentsystem/user-service:v1
+    container_name: user-service
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8081"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://userdb:5432/userdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=${USER_DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+    depends_on:
+      userdb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  appointmentservice:
+    build: ../../appointments
+    image: appointmentsystem/appointment-service:v1
+    container_name: appointment-service
+    healthcheck:
+      test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-base
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://appointmentdb:5432/appointmentdb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=${APPOINTMENT_DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      appointmentdb:
+        condition: service_healthy
+      eurekaserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  gateway:
+    build: ../../gatewayserver
+    image: appointmentsystem/gatewayserver:v1
+    container_name: gateway
+    ports:
+      - "9090:9090"
+    extends:
+      file: common-config.yml
+      service: microservice-base
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      userservice:
+        condition: service_healthy
+    environment:
+      - SPRING_DATA_REDIS_HOST=redis
+      - JWT_SECRET=${JWT_SECRET}
+
+networks:
+  microservice-network:
+    name: microservice-network
+    driver: bridge

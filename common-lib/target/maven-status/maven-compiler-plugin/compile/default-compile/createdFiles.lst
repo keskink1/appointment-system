@@ -1,15 +1,16 @@
 com/keskin/common/dto/response/PaginatedResponseDto.class
 com/keskin/common/dto/event/UserDeletedEvent.class
-com/keskin/common/exception/UnauthorizedException.class
 com/keskin/common/dto/response/ErrorResponseDto.class
 com/keskin/common/exception/ResourceAlreadyExistsException.class
 com/keskin/common/security/aspect/RoleCheckAspect.class
 com/keskin/common/exception/ResourceNotFoundException.class
+com/keskin/common/exception/ForbiddenException.class
 com/keskin/common/dto/event/UserCreatedEvent.class
 com/keskin/common/exception/NoEmptyFieldException.class
 com/keskin/common/enums/Role.class
 com/keskin/common/util/AuthorizationUtil.class
 com/keskin/common/dto/UserDto.class
+com/keskin/common/util/UserContextHelper.class
 com/keskin/common/exception/AuthenticationException.class
 com/keskin/common/dto/response/AuthResponseDto.class
 com/keskin/common/dto/event/UserUpdatedEvent.class

@@ -1,0 +1,28 @@
+services:
+  # General
+  network-deploy-service:
+    networks:
+      - microservice-network
+
+  # Microservices
+  microservice-base:
+    extends:
+      service: network-deploy-service
+    environment:
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://configserver:8888/
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8761/eureka/
+
+  # Db
+  base-postgres-config:
+    extends:
+      service: network-deploy-service
+    image: postgres:15
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s

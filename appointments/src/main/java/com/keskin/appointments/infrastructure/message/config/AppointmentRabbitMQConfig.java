@@ -7,14 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitMQConfig {
+public class AppointmentRabbitMQConfig {
 
     public static final String USER_EXCHANGE = "user.exchange";
     public static final String USER_QUEUE = "appointment.user.queue";
 
 
 
-    @Bean
+    @Bean(name = "appointmentUserExchange")
     public TopicExchange userExchange() {
         return new TopicExchange(USER_EXCHANGE);
     }
@@ -49,7 +49,7 @@ public class RabbitMQConfig {
                 .with("user.deleted");
     }
 
-    @Bean
+    @Bean(name = "appointmentJsonMessageConverter")
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }

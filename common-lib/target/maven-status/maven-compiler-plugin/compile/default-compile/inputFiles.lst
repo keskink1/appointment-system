@@ -11,15 +11,16 @@
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/dto/response/PaginatedResponseDto.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/enums/Role.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/AuthenticationException.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/ForbiddenException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/GlobalExceptionHandler.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/InvalidValidationException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/NoEmptyFieldException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/ResourceAlreadyExistsException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/ResourceNotFoundException.java
-/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/exception/UnauthorizedException.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/model/BaseEntity.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/annotation/RequiresAdmin.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/aspect/RoleCheckAspect.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/config/AbstractSecurityConfig.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/security/filter/GatewayHeaderFilter.java
 /Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/util/AuthorizationUtil.java
+/Users/kaankeskin/IdeaProjects/2026/appointment-system/common-lib/src/main/java/com/keskin/common/util/UserContextHelper.java

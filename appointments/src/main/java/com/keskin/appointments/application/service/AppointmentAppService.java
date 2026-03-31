@@ -54,6 +54,10 @@ public class AppointmentAppService {
                 .orElseThrow(() -> new ResourceNotFoundException("Appointment", "ID", appointmentId));
     }
 
+    /**
+     * Retrieves an appointment by ID.
+     * Only the owner or an admin can access it.
+     */
     @Transactional(readOnly = true)
     public AppointmentDto getAppointment(UUID appointmentId) {
         log.info("Fetching appointment {} by user {}", appointmentId, UserContextHelper.getCurrentUserId());
@@ -65,6 +69,10 @@ public class AppointmentAppService {
         return appointmentMapper.toDto(appointment);
     }
 
+    /**
+     * Creates a new appointment for the currently authenticated user.
+     * Validates that no appointment exists at the same time for the user.
+     */
     @Transactional
     public AppointmentDto createAppointment(CreateAppointmentRequestDto requestDto) {
         String currentUserMail = UserContextHelper.getCurrentUserEmail();
@@ -98,6 +106,10 @@ public class AppointmentAppService {
         return appointmentMapper.toDto(createdAppointment);
     }
 
+    /**
+     * Reschedules an existing appointment if the time has changed.
+     * No-op if the requested time is the same as the current time.
+     */
     @Transactional
     public AppointmentDto updateAppointment(UUID appointmentId, UpdateAppointmentDto requestDto) {
         log.info("Updating appointment {} by user {}", appointmentId, UserContextHelper.getCurrentUserId());
@@ -123,6 +135,9 @@ public class AppointmentAppService {
         return appointmentMapper.toDto(appointment);
     }
 
+    /**
+     * Soft-cancels an appointment. The record is retained but marked as cancelled.
+     */
     @Transactional
     public void deleteAppointment(UUID appointmentId) {
         log.info("Cancelling appointment {} by user {}", appointmentId, UserContextHelper.getCurrentUserId());
@@ -137,6 +152,9 @@ public class AppointmentAppService {
         log.info("Appointment {} cancelled", appointmentId);
     }
 
+    /**
+     * Approves a pending appointment. Admin only.
+     */
     @Transactional
     public AppointmentDto approveAppointment(UUID appointmentId) {
         log.info("Approving appointment {} by admin {}", appointmentId, UserContextHelper.getCurrentUserEmail());
@@ -153,6 +171,9 @@ public class AppointmentAppService {
         return appointmentMapper.toDto(appointment);
     }
 
+    /**
+     * Marks an appointment as completed. Admin only.
+     */
     @Transactional
     public AppointmentDto completeAppointment(UUID appointmentId) {
         log.info("Completing appointment {} by admin {}", appointmentId, UserContextHelper.getCurrentUserEmail());

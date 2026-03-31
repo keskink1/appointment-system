@@ -5,6 +5,7 @@ import com.keskin.appointments.application.dto.CreateAppointmentRequestDto;
 import com.keskin.appointments.application.dto.UpdateAppointmentDto;
 import com.keskin.appointments.application.service.AppointmentAppService;
 import com.keskin.common.security.annotation.RequiresAdmin;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,14 @@ public class AppointmentController {
 
     private final AppointmentAppService appointmentAppService;
 
+    @Operation(summary = "Get appointment by ID", description = "Accessible by the owner or an admin.")
     @GetMapping("/{id}")
     public ResponseEntity<AppointmentDto> getAppointment(
             @PathVariable UUID id) {
         return ResponseEntity.ok(appointmentAppService.getAppointment(id));
     }
 
+    @Operation(summary = "Create a new appointment")
     @PostMapping
     public ResponseEntity<AppointmentDto> createAppointment(
             @Valid @RequestBody CreateAppointmentRequestDto requestDto
@@ -48,6 +51,7 @@ public class AppointmentController {
         return ResponseEntity.created(location).body(createdAppointment);
     }
 
+    @Operation(summary = "Reschedule an appointment")
     @PutMapping("/{id}")
     public ResponseEntity<AppointmentDto> updateAppointment(
             @PathVariable UUID id,
@@ -58,6 +62,7 @@ public class AppointmentController {
         return ResponseEntity.ok(updatedAppointment);
     }
 
+    @Operation(summary = "Cancel an appointment")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAppointment(
             @PathVariable UUID id
@@ -69,6 +74,7 @@ public class AppointmentController {
 
     // ------ ADMIN ONLY -------
 
+    @Operation(summary = "Approve an appointment", description = "Admin only.")
     @RequiresAdmin
     @PutMapping("/{id}/approve")
     public ResponseEntity<AppointmentDto> approveAppointment(
@@ -79,6 +85,7 @@ public class AppointmentController {
         return ResponseEntity.ok(approvedAppointment);
     }
 
+    @Operation(summary = "Complete an appointment", description = "Admin only.")
     @RequiresAdmin
     @PutMapping("/{id}/complete")
     public ResponseEntity<AppointmentDto> completeAppointment(

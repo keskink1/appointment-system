@@ -1,7 +1,7 @@
 package com.keskin.appointments.infrastructure.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.keskin.appointments.infrastructure.message.config.RabbitMQConfig;
+import com.keskin.appointments.infrastructure.message.config.AppointmentRabbitMQConfig;
 import com.keskin.common.dto.event.UserCreatedEvent;
 import com.keskin.common.dto.event.UserDeletedEvent;
 import com.keskin.common.dto.event.UserUpdatedEvent;
@@ -19,7 +19,7 @@ public class UserEventRouter {
     private final ObjectMapper objectMapper;
     private final UserEventHandler userEventHandler;
 
-    @RabbitListener(queues = RabbitMQConfig.USER_QUEUE)
+    @RabbitListener(queues = AppointmentRabbitMQConfig.USER_QUEUE)
     public void routeUserEvent(Message message) {
         String routingKey = message.getMessageProperties().getReceivedRoutingKey();
 

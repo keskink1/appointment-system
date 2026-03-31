@@ -23,7 +23,7 @@ public class GatewayConfig {
                 // 1. AUTH (LOGIN & REGISTER) -> /auth/**
                 .route("auth-route", r -> r.path("/auth/**")
                         .filters(f -> f.rewritePath("/auth/(?<segment>.*)", "/api/v1/auth/${segment}"))
-                        .uri("lb://user-service"))
+                        .uri("lb://USER-SERVICE"))
 
                 // 2. USER SERVICE -> /users/**
                 .route("user-service", r -> r.path("/users/**")
@@ -32,7 +32,7 @@ public class GatewayConfig {
                                 .rewritePath("/users/(?<segment>.*)", "/api/v1/users/${segment}")
                                 .addRequestHeader("X-Response-Header", "Gateway-Authenticated")
                         )
-                        .uri("lb://user-service"))
+                        .uri("lb://USER-SERVICE"))
 
                 // 3. APPOINTMENT SERVICE -> /appointments/**
                 .route("appointment-service", r -> r.path("/appointments/**")
@@ -44,7 +44,7 @@ public class GatewayConfig {
                                         .setName("appointmentCB")
                                         .setFallbackUri("forward:/fallback/appointment"))
                         )
-                        .uri("lb://appointment-service"))
+                        .uri("lb://APPOINTMENT-SERVICE"))
                 .build();
     }
 }
