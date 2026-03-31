@@ -21,7 +21,7 @@ Contains Rich Entities (User) and immutable Value Objects (Email, Name, etc.).
 ## Microservice Roadmap
 
 - **User Service (Active):** Identity & Access.
-- **Appointment Service (Planned):** Scheduling & Logic.
+- **Appointment Service (Active):** Scheduling & Logic.
 - **Notification Service (Planned):** Alerts & Communication.
 
 ---
