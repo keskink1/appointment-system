@@ -39,7 +39,7 @@ public class JwtUtils {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload()
-                .getSubject();
+                .get("email", String.class); // get from claim
     }
 
     public String extractUserId(String token) {

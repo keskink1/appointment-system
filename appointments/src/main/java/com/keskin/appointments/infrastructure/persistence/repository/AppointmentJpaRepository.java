@@ -18,5 +18,5 @@ public interface AppointmentJpaRepository extends JpaRepository<AppointmentEntit
             @Param("status") AppointmentStatus status
     );
 
-    boolean findByAppointmentTimeAndUser_UserId(LocalDateTime appointmentTime, UUID userUserId);
+    boolean existsByAppointmentTimeAndUser_UserId(LocalDateTime appointmentTime, UUID userUserId);
 }

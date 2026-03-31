@@ -38,7 +38,7 @@ public class GatewayConfig {
                 .route("appointment-service", r -> r.path("/appointments/**")
                         .filters(f -> f
                                 .filter(authFilter.apply(new AuthenticationFilter.Config()))
-                                .rewritePath("/appointments/(?<segment>.*)", "/api/v1/appointment/${segment}")
+                                .rewritePath("/appointments(?<segment>/.*|$)", "/api/v1/appointments${segment}")
                                 .addRequestHeader("X-Gateway-Time", LocalDateTime.now().toString())
                                 .circuitBreaker(config -> config
                                         .setName("appointmentCB")

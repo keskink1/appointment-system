@@ -2,7 +2,6 @@ package com.keskin.appointments.domain.model;
 
 import com.keskin.appointments.domain.valueobject.AppointmentTime;
 import com.keskin.appointments.domain.valueobject.UserShadow;
-import com.keskin.common.exception.ResourceAlreadyExistsException;
 import com.keskin.common.model.BaseEntity;
 import jakarta.validation.ValidationException;
 import lombok.Getter;

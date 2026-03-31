@@ -47,6 +47,6 @@ public class SqlAppointmentRepositoryImpl implements AppointmentRepository {
 
     @Override
     public boolean existsByTimeAndUserId(LocalDateTime time, UUID userId) {
-        return appointmentRepository.findByAppointmentTimeAndUser_UserId(time,userId);
+        return appointmentRepository.existsByAppointmentTimeAndUser_UserId(time,userId);
     }
 }

@@ -124,6 +124,8 @@ services:
     build: ../../appointments
     image: appointmentsystem/appointment-service:v1
     container_name: appointment-service
+    ports:
+      - "8082:8082"
     healthcheck:
       test: "curl --fail --silent localhost:8082/actuator/health/readiness | grep UP || exit 1"
       interval: 10s

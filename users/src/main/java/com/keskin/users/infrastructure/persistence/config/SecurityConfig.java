@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-@Configuration
+@Configuration("userSecurityConfig")
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig extends AbstractSecurityConfig {
